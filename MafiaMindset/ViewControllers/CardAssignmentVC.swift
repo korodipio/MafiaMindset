@@ -1,0 +1,176 @@
+//
+//  CardAssignmentVC.swift
+//  MafiaMindset
+//
+//  Created by Aghasif Guliyev on 10.08.23.
+//
+
+import UIKit
+import LTMorphingLabel
+
+class CardAssignmentVC: UIViewController {
+
+    private let onComplete: (SessionModel) -> Void
+    private let model: SessionModel
+    private let selectedRolesModel: SessionModel?
+    private var currentPlayerIndex: Int = 0 {
+        didSet {
+            prepare(forPlayerWith: currentPlayerIndex)
+        }
+    }
+    private let titleLabel = UILabel()
+    private let numberLabel = LTMorphingLabel()
+    private var buttonVC: ButtonVC!
+    
+    init(onComplete: @escaping (SessionModel) -> Void, model: SessionModel) {
+        self.onComplete = onComplete
+        self.model = model
+        self.selectedRolesModel = model.copy()
+        self.currentPlayerIndex = 0
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUi()
+    }
+    
+    private func setupUi() {
+        title = "Раздача ролей"
+        view.backgroundColor = .secondarySystemBackground
+        
+        titleLabel.text = "Игрок под номером"
+        titleLabel.textAlignment = .center
+        titleLabel.font = .rounded(ofSize: 20, weight: .regular)
+        numberLabel.morphingEffect = .evaporate
+        numberLabel.font = .rounded(ofSize: 60, weight: .bold)
+        view.addSubview(titleLabel)
+        view.addSubview(numberLabel)
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        numberLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            numberLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            numberLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            titleLabel.bottomAnchor.constraint(equalTo: numberLabel.topAnchor),
+        ])
+        
+        buttonVC = .init(didTap: { [weak self] () in
+            self?.didTapAssignButton()
+        })
+        add(buttonVC)
+        buttonVC.buttonTitle = "Задать роль"
+
+        prepare(forPlayerWith: currentPlayerIndex)
+    }
+    
+    private func prepare(forPlayerWith index: Int) {
+        numberLabel.text = "\(index + 1)"
+    }
+    
+    private func availableRoles() -> [SessionRoleId: Int] {
+        guard let model = selectedRolesModel else { return [:] }
+        
+        var roles: [SessionRoleId: Int] = [:]
+        
+        if model.isMafExists {
+            roles[.maf] = model.mafCount
+        }
+        if model.isBossExists {
+            roles[.boss] = model.bossCount
+        }
+        if model.isWolfExists {
+            roles[.wolf] = model.wolfCount
+        }
+        if model.isMedicExists {
+            roles[.medic] = model.medicCount
+        }
+        if model.isCommisarExists {
+            roles[.commissar] = model.commissarCount
+        }
+        if model.isPatrolExists {
+            roles[.patrol] = model.patrolCount
+        }
+        if model.isManiacExists {
+            roles[.maniac] = model.maniacCount
+        }
+        if model.isBloodhoundExists {
+            roles[.bloodhound] = model.bloodhoundCount
+        }
+        if model.isCivExists {
+            roles[.civ] = model.civCount
+        }
+        
+        return roles
+    }
+    
+    @objc private func didTapAssignButton() {
+        let vc = UIAlertController(title: "Выбери нужную роль", message: nil, preferredStyle: .alert)
+        vc.view.tintColor = .black
+        
+        availableRoles().sorted { v1, v2 in
+            v1.key.title < v2.key.title
+        }.forEach { (role: SessionRoleId, count: Int) in
+            let roleAction = UIAlertAction(title: "\(role.title) - \(count)", style: .default) { _ in
+                self.assignRoleToPlayer(with: self.currentPlayerIndex, role: role)
+            }
+            vc.addAction(roleAction)
+        }
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        vc.addAction(cancelAction)
+        
+        present(vc, animated: true)
+    }
+    
+    // Decreases role count and returns total count of roles
+    private func decreaseRoleCount(_ role: SessionRoleId) -> Int {
+        guard let model = selectedRolesModel else { return 0 }
+        
+        switch role {
+        case .civ:
+            model.civCount -= 1
+        case .maf:
+            model.mafCount -= 1
+        case .wolf:
+            model.wolfCount -= 1
+        case .boss:
+            model.bossCount -= 1
+        case .medic:
+            model.medicCount -= 1
+        case .commissar:
+            model.commissarCount -= 1
+        case .patrol:
+            model.patrolCount -= 1
+        case .maniac:
+            model.maniacCount -= 1
+        case .bloodhound:
+            model.bloodhoundCount -= 1
+        }
+        
+        return model.totalCount
+    }
+    
+    private func finishAssignment() {
+        onComplete(model)
+    }
+    
+    private func assignRoleToPlayer(with index: Int, role: SessionRoleId) {
+        model.players[index] = role
+        let rolesCount = decreaseRoleCount(role)
+        if rolesCount == 0 {
+            finishAssignment()
+        }
+        else {
+            currentPlayerIndex += 1
+        }
+    }
+    
+}
