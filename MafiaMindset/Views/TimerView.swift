@@ -7,6 +7,7 @@
 
 import UIKit
 import LTMorphingLabel
+import CoreHaptics
 
 class TimerView: UIView {
     
@@ -26,7 +27,7 @@ class TimerView: UIView {
         set { titleLabel.text = newValue }
     }
     var vibroFeedback = true
-    private let feedback = UIImpactFeedbackGenerator(style: .rigid)
+    private var engine: CHHapticEngine?
     private var timer: Timer?
     private let titleLabel = LTMorphingLabel()
     private let timerLabel = LTMorphingLabel()
@@ -103,7 +104,48 @@ class TimerView: UIView {
         state = .paused
         playPauseButton.tintColor = .primary
         playPauseButton.addTarget(self, action: #selector(didTapPlayPauseButton), for: .touchUpInside)
+        
+        do {
+            engine = try CHHapticEngine()
+            try engine?.start()
+        } catch {
+            print("Error starting haptic engine: \(error)")
+        }
     }
+
+    func playHapticPattern() {
+        guard let engine else { return }
+
+        // Define a haptic pattern with a longer and more complex sequence
+        var events: [CHHapticEvent] = []
+        
+        // Start with a gentle tap
+        let tapIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.5)
+        let tapSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
+        let tapEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [tapIntensity, tapSharpness], relativeTime: 0, duration: 0.2)
+        events.append(tapEvent)
+        
+        // Followed by a smooth buzz
+        let buzzIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.8)
+        let buzzSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
+        let buzzEvent = CHHapticEvent(eventType: .hapticContinuous, parameters: [buzzIntensity, buzzSharpness], relativeTime: 0.3, duration: 0.5)
+        events.append(buzzEvent)
+        
+        // End with a quick tap
+        let endTapIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
+        let endTapSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)
+        let endTapEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [endTapIntensity, endTapSharpness], relativeTime: 0.9)
+        events.append(endTapEvent)
+        
+        do {
+            let pattern = try CHHapticPattern(events: events, parameters: [])
+            let player = try engine.makePlayer(with: pattern)
+            try player.start(atTime: 0)
+        } catch {
+            print("Error playing haptic pattern: \(error)")
+        }
+    }
+
     
     @objc private func didTapPlusButton() {
         self.seconds += 15
@@ -117,6 +159,8 @@ class TimerView: UIView {
         guard Int(seconds) != 0 else { return }
         self.seconds = seconds
         
+        UIApplication.shared.isIdleTimerDisabled = true
+        
         var initInterval = Date.now.timeIntervalSince1970
         let timer = Timer(fire: .now, interval: 0.1, repeats: true) { [weak self] timer in
             guard let self else { timer.invalidate(); return }
@@ -125,12 +169,9 @@ class TimerView: UIView {
             let delta = current - initInterval
             initInterval = current
             self.seconds -= min(delta, self.seconds)
-            if self.vibroFeedback && self.seconds > 0.0 && self.seconds < 1.0 {
-                self.feedback.prepare()
-            }
             if self.seconds == 0 {
                 if self.vibroFeedback {
-                    self.feedback.impactOccurred()
+                    self.playHapticPattern()
                 }
                 self.stop()
             }
@@ -155,6 +196,7 @@ class TimerView: UIView {
     private func stop() {
         timer?.invalidate()
         timer = nil
+        UIApplication.shared.isIdleTimerDisabled = false
         
         state = .paused
         DispatchQueue.main.async {

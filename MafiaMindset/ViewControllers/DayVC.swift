@@ -14,6 +14,7 @@ class DayVC: UIViewController {
         case playerDiscussion
         case votedPlayerDiscussion
         case voting
+        case lastDiscussion
         case complete
     }
     
@@ -28,6 +29,7 @@ class DayVC: UIViewController {
     private let titleLabel = UILabel()
     private let stateLabel = UILabel()
     private var buttonVC: ButtonVC!
+    private var listBarButtonItem: UIBarButtonItem!
     
     init(model: SessionModel, onComplete: @escaping (DayModel) -> Void) {
         self.model = model
@@ -52,13 +54,16 @@ class DayVC: UIViewController {
         titleLabel.text = "На очереди"
         titleLabel.textAlignment = .center
         titleLabel.font = .rounded(ofSize: 20, weight: .regular)
-//        stateLabel.morphingEffect = .evaporate
         stateLabel.numberOfLines = 0
         stateLabel.textAlignment = .center
         stateLabel.lineBreakMode = .byWordWrapping
         stateLabel.font = .rounded(ofSize: 60, weight: .bold)
         view.addSubview(titleLabel)
         view.addSubview(stateLabel)
+
+        listBarButtonItem = UIBarButtonItem(image: .init(systemName: "list.clipboard"), style: .done, target: self, action: #selector(didTapListButton))
+        listBarButtonItem.tintColor = .black
+        navigationItem.leftBarButtonItem = listBarButtonItem
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -82,6 +87,19 @@ class DayVC: UIViewController {
         state = .globalDiscussion
     }
     
+    @objc private func didTapListButton() {
+        let vc = DayVoteStatisticVC(dayModel: dayModel) { [weak self] () in
+            guard let self else { return }
+        }
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func pushViewController(_ vc: UIViewController) {
+        // Inherit left bar button
+        vc.navigationItem.leftBarButtonItem = listBarButtonItem
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @objc private func didTabStartButton() {
         switch state {
         case .globalDiscussion:
@@ -90,7 +108,7 @@ class DayVC: UIViewController {
                 self.state = .playerDiscussion
                 self.navigationController?.popToViewController(self, animated: true)
             })
-            navigationController?.pushViewController(vc, animated: true)
+            pushViewController(vc)
             
         case .playerDiscussion:
             let vc = PlayersDiscussionVC(model: model, dayModel: dayModel, onComplete: { [weak self] () in
@@ -102,7 +120,7 @@ class DayVC: UIViewController {
                 self.state = .votedPlayerDiscussion
                 self.navigationController?.popToViewController(self, animated: true)
             })
-            navigationController?.pushViewController(vc, animated: true)
+            pushViewController(vc)
             
         case .votedPlayerDiscussion:
             let vc = VotedPlayersDiscussionVC(dayModel: dayModel) { [weak self] () in
@@ -110,14 +128,22 @@ class DayVC: UIViewController {
                 self.state = .voting
                 self.navigationController?.popToViewController(self, animated: true)
             }
-            navigationController?.pushViewController(vc, animated: true)
+            pushViewController(vc)
 
         case .voting:
             let vc = DayVoteVC(model: model, dayModel: dayModel) { [weak self] () in
                 guard let self else { return }
+                self.state = .lastDiscussion
+                self.navigationController?.popToViewController(self, animated: true)
+            }
+            pushViewController(vc)
+            
+        case .lastDiscussion:
+            let vc = LastDiscussionVC(dayModel: dayModel) { [weak self] () in
+                guard let self else { return }
                 self.state = .complete
             }
-            navigationController?.pushViewController(vc, animated: true)
+            pushViewController(vc)
             
         default:
             break
@@ -134,6 +160,8 @@ class DayVC: UIViewController {
             stateLabel.text = "Оправдание"
         case .voting:
             stateLabel.text = "Голосование"
+        case .lastDiscussion:
+            stateLabel.text = "Последнее слово"
         case .complete:
             stateLabel.text = "Результаты"
             

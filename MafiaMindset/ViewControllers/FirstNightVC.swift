@@ -109,7 +109,7 @@ class FirstNightVC: UIViewController {
             rolesToWake.first { role in
                 role.role == .boss
             }?.players.forEach({ ind in
-                playersLabel.text! += "\(ind + 1)(Босс),"
+                playersLabel.text! += "\(ind + 1)(Б.),"
             })
         }
         

@@ -117,11 +117,11 @@ class NightView: UIView {
         })
         
         var messagesToShow: [String] = []
-        if model.isWolfExists && model.isAnyMafiaOrBossDeadOrKicked && !model.isWolfWakedUp {
+        if model.isWolfExists && model.isAlive(role: .wolf) && model.isAnyMafiaOrBossDeadOrKicked && !model.isWolfWakedUp {
             model.isWolfWakedUp = true
             messagesToShow.append("Разбуди оборотня!")
         }
-        if model.isCommisarExists && !model.isCommissarAlive && !model.isPatrolWakedUp {
+        if model.isCommisarExists && model.isAlive(role: .patrol) && !model.isAlive(role: .commissar) && !model.isPatrolWakedUp {
             model.isPatrolWakedUp = true
             messagesToShow.append("Разбуди патрульного!")
         }
@@ -196,7 +196,7 @@ class NightView: UIView {
                 let action = UIAlertAction(title: "\(ind + 1)", style: .default) { _ in
                     
                     var isCorrect = false
-                    if self.model.isCommissarAlive {
+                    if self.model.isAlive(role: .commissar) {
                         isCorrect = self.playersWith(roles: [.commissar]).contains(ind)
                     } else if self.model.isPatrolExists {
                         isCorrect = self.playersWith(roles: [.patrol]).contains(ind)
@@ -248,7 +248,7 @@ class NightView: UIView {
                 complete()
                 return
             }
-            if model.isCommissarAlive {
+            if model.isAlive(role: .commissar) {
                 complete()
                 return
             }
@@ -343,7 +343,7 @@ class NightView: UIView {
             }
             
         case .patrol:
-            if model.isCommissarAlive {
+            if model.isAlive(role: .patrol) {
                 moveToNextPlayer()
             } else {
                 roleLabel.text = SessionRoleId.commissar.title

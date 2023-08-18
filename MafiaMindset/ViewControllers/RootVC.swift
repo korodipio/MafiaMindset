@@ -9,10 +9,11 @@ import UIKit
 
 class RootVC: UIViewController {
     
-    private var label: UILabel? = UILabel()
+    private var label: UILabel?
     private let storageViewModel = StorageSessionViewModel()
     private let tableView = UITableView()
     private var models: [SessionModel] = []
+    let v = TimerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +78,7 @@ class RootVC: UIViewController {
         let navBarAppearance = UINavigationBarAppearance()
         let attributes: [NSAttributedString.Key : Any] = [.font: UIFont.rounded(ofSize: 16, weight: .medium),]
         navBarAppearance.largeTitleTextAttributes = [.font: UIFont.rounded(ofSize: 24, weight: .bold)]
-        navBarAppearance.titleTextAttributes = attributes
+        navBarAppearance.titleTextAttributes =  attributes
         navBarAppearance.buttonAppearance.normal.titleTextAttributes = attributes
         navBarAppearance.doneButtonAppearance.normal.titleTextAttributes = attributes
         
@@ -96,7 +97,6 @@ class RootVC: UIViewController {
         view.addSubview(tableView)
         tableView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         tableView.constraintToParent()
-        tableView.contentInset.bottom = 80
         tableView.register(SessionTableViewCell.self, forCellReuseIdentifier: SessionTableViewCell.identifier)
     }
     
@@ -113,7 +113,8 @@ class RootVC: UIViewController {
 //        model.medicCount = 1
 //        model.commissarCount = 1
 //        model.patrolCount = 1
-        
+//        model.dayNightCycleType = .day
+//
 //        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
 
         let vc = CreateSessionVC { [weak self] model in

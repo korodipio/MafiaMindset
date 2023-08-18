@@ -57,6 +57,8 @@ class LabelTableViewCell: UITableViewCell {
         stackView.addArrangedSubview(titleLabel)
         stackView.backgroundColor = .clear
         titleLabel.font = .rounded(ofSize: 16, weight: .regular)
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
         
         didChangeIsActive()
     }

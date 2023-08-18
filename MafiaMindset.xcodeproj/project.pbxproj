@@ -46,6 +46,8 @@
 		97E5639E2A8E1D4A000281F4 /* SessionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E5639D2A8E1D4A000281F4 /* SessionTableViewCell.swift */; };
 		97E563A02A8E2228000281F4 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E5639F2A8E2228000281F4 /* SessionView.swift */; };
 		97E563A52A8E6D35000281F4 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E563A42A8E6D35000281F4 /* Array+Extension.swift */; };
+		97E563A72A8F4C74000281F4 /* LastDiscussionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E563A62A8F4C74000281F4 /* LastDiscussionVC.swift */; };
+		97E563A92A8F70FA000281F4 /* DayVoteStatisticVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E563A82A8F70FA000281F4 /* DayVoteStatisticVC.swift */; };
 		97E5FCC62A84131F00E8BB0C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E5FCC52A84131F00E8BB0C /* AppDelegate.swift */; };
 		97E5FCC82A84131F00E8BB0C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E5FCC72A84131F00E8BB0C /* SceneDelegate.swift */; };
 		97E5FCCA2A84131F00E8BB0C /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E5FCC92A84131F00E8BB0C /* RootVC.swift */; };
@@ -97,6 +99,8 @@
 		97E5639D2A8E1D4A000281F4 /* SessionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTableViewCell.swift; sourceTree = "<group>"; };
 		97E5639F2A8E2228000281F4 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		97E563A42A8E6D35000281F4 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		97E563A62A8F4C74000281F4 /* LastDiscussionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastDiscussionVC.swift; sourceTree = "<group>"; };
+		97E563A82A8F70FA000281F4 /* DayVoteStatisticVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayVoteStatisticVC.swift; sourceTree = "<group>"; };
 		97E5FCC22A84131F00E8BB0C /* MafiaMindset.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MafiaMindset.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97E5FCC52A84131F00E8BB0C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97E5FCC72A84131F00E8BB0C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -271,6 +275,8 @@
 				9788846C2A89426E00953C4A /* DayVoteVC.swift */,
 				9788846E2A8A327500953C4A /* DayResultVC.swift */,
 				9703997F2A8CB56B00E51F78 /* ConfigureSessionVC.swift */,
+				97E563A62A8F4C74000281F4 /* LastDiscussionVC.swift */,
+				97E563A82A8F70FA000281F4 /* DayVoteStatisticVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -436,6 +442,7 @@
 				9788846B2A89401200953C4A /* VotedPlayersDiscussionVC.swift in Sources */,
 				973AE5222A841A64005F13F8 /* Collection+Extension.swift in Sources */,
 				978884722A8A379700953C4A /* ButtonVC.swift in Sources */,
+				97E563A72A8F4C74000281F4 /* LastDiscussionVC.swift in Sources */,
 				973AE5302A84F00B005F13F8 /* Models.swift in Sources */,
 				97E5FCCA2A84131F00E8BB0C /* RootVC.swift in Sources */,
 				973AE5242A841A83005F13F8 /* UIResponder+Extension.swift in Sources */,
@@ -450,6 +457,7 @@
 				978884692A89212000953C4A /* PlayersDiscussionVC.swift in Sources */,
 				973AE51E2A841A40005F13F8 /* UIFont+Extension.swift in Sources */,
 				97E563982A8CF84B000281F4 /* SessionViewModel.swift in Sources */,
+				97E563A92A8F70FA000281F4 /* DayVoteStatisticVC.swift in Sources */,
 				97E5FCDF2A8417EB00E8BB0C /* CreateSessionVC.swift in Sources */,
 				978884652A891DCF00953C4A /* DayVC.swift in Sources */,
 				978884592A86644800953C4A /* NightView.swift in Sources */,
@@ -624,7 +632,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -662,7 +670,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

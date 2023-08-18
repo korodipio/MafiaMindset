@@ -35,11 +35,7 @@ class GlobalDiscussionVC: UIViewController {
         view.addSubview(timerView)
         timerView.constraintToParent()
         timerView.seconds = 60 * 3
-        timerView.onComplete = { [weak self] () in
-            guard let self else { return }
-            self.onComplete()
-        }
-        
+
         buttonVC = .init(didTap: { [weak self] () in
             self?.didTapSkipButton()
         })

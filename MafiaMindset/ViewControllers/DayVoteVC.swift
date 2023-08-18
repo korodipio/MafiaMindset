@@ -10,6 +10,7 @@ import LTMorphingLabel
 
 class DayVoteVC: UIViewController {
 
+    var revoting = false
     private let onComplete: () -> Void
     private let model: SessionModel
     private let dayModel: DayModel
@@ -36,8 +37,9 @@ class DayVoteVC: UIViewController {
     }
 
     private func setupUi() {
-        title = "Голосование"
+        title = revoting ? "Переголосование" : "Голосование"
         view.backgroundColor = .secondarySystemBackground
+        navigationItem.hidesBackButton = true
         
         players = dayModel.votedPlayers
         currentPlayerIndex = 0
@@ -78,7 +80,7 @@ class DayVoteVC: UIViewController {
     private func handle(complete: @escaping () -> Void) {
         let vc = UIAlertController(title: "Исключение", message: nil, preferredStyle: .alert)
         vc.view.tintColor = .black
-        
+
         var tf: UITextField!
         vc.addTextField { textField in
             tf = textField
@@ -87,7 +89,7 @@ class DayVoteVC: UIViewController {
         let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
             guard let value = tf?.text, !value.isEmpty else { return }
             guard let intValue = Int(value), intValue >= 0 && intValue <= self.availableVotesCount() else { return }
-            self.dayModel.numberOfVote[self.players[self.currentPlayerIndex].to] = intValue
+            self.players[self.currentPlayerIndex].voteCount = intValue
             complete()
         }
         vc.addAction(okAction)
@@ -108,21 +110,48 @@ class DayVoteVC: UIViewController {
         let votedPlayersCount = dayModel.votedPlayerCount
         let nonVotedPlayersCount = alivePlayersCount - votedPlayersCount
         
-        var maxVotes = 0
-        var mostVotedPlayer = 0
-        dayModel.numberOfVote.forEach { v1 in
-            if v1.value > maxVotes {
-                mostVotedPlayer = v1.key
-                maxVotes = v1.value
+        let sorted = players.sorted { v1, v2 in
+            v1.voteCount > v2.voteCount
+        }
+        
+        if sorted.count >= 2 {
+            let f = sorted[0]
+            let maxVotes = f.voteCount
+            if maxVotes > nonVotedPlayersCount {
+                
+                let mostVotedPlayers = players.compactMap { voteModel -> DayVoteModel? in
+                    guard voteModel.voteCount == maxVotes else { return nil }
+                    voteModel.voteCount = 0
+                    return voteModel
+                }
+                if mostVotedPlayers.count >= 2 {
+                    dayModel.votedPlayers = mostVotedPlayers
+                    let vc = DayVoteVC(model: model, dayModel: dayModel) { [weak self] () in
+                        guard let self else { return }
+                        self.onComplete()
+                    }
+                    vc.navigationItem.leftBarButtonItem = navigationItem.leftBarButtonItem
+                    vc.revoting = true
+                    navigationController?.pushViewController(vc, animated: true)
+                    return
+                }
             }
         }
+        
+        players.forEach { m in
+            print(m.by, m.to, m.voteCount)
+        }
+        
+        let maxVotes = sorted.first?.voteCount ?? 0
+        var mostVotedPlayer = 0
         if nonVotedPlayersCount > maxVotes {
             mostVotedPlayer = players.last!.to
         }
-        
+
         dayModel.nonVotedPlayersCount = nonVotedPlayersCount
         dayModel.kickedPlayers.append(mostVotedPlayer)
         model.kickedPlayers.insert(contentsOf: dayModel.kickedPlayers, at: 0)
+        onComplete()
     }
     
     @objc private func didTapDoneButton() {
@@ -130,7 +159,6 @@ class DayVoteVC: UIViewController {
             self.currentPlayerIndex += 1
             guard self.currentPlayerIndex < self.players.count else {
                 self.finishVote()
-                self.onComplete()
                 return
             }
             self.prepare()

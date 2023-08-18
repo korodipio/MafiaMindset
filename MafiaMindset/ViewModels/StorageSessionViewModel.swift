@@ -11,7 +11,7 @@ class StorageSessionViewModel {
     private let realm = try! Realm()
     
     func clearAll() {
-        try? realm.write({
+        try! realm.write({
             realm.deleteAll()
         })
     }

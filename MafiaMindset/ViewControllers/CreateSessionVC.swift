@@ -164,7 +164,7 @@ class CreateSessionVC: UIViewController {
         let totalCell = cellBy(id: .total) as! IntRoleTableViewCell
         let totalCount = totalCell.intValue ?? 0
         let negativeCount = model.mafCount + model.wolfCount + model.bossCount
-        if totalCount - negativeCount > negativeCount {
+        if totalCount - negativeCount > negativeCount && totalCount >= model.activeCount {
             isValid = true
             model.civCount = totalCount - model.activeCount
         }

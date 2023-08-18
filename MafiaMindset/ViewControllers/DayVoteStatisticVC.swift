@@ -1,18 +1,18 @@
 //
-//  DayResultVC.swift
+//  DayVoteStatisticVC.swift
 //  MafiaMindset
 //
-//  Created by Aghasif Guliyev on 14.08.23.
+//  Created by Aghasif Guliyev on 18.08.23.
 //
 
 import UIKit
 
-class DayResultVC: UIViewController {
-    
+class DayVoteStatisticVC: UIViewController {
+
     private let onComplete: () -> Void
+    private var label: UILabel?
     private let dayModel: DayModel
     private let tableView = UITableView()
-    private var output: [String] = []
     private var buttonVC: ButtonVC!
     
     init(dayModel: DayModel, onComplete: @escaping () -> Void) {
@@ -29,11 +29,22 @@ class DayResultVC: UIViewController {
         super.viewDidLoad()
         setupUi()
     }
-
+    
     private func setupUi() {
-        title = "День. Результаты"
+        title = "Статистика дня"
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
+        
+        let label = UILabel()
+        view.addSubview(label)
+        label.constraintToParent()
+        label.font = .rounded(ofSize: 12, weight: .medium)
+        label.textAlignment = .center
+        label.textColor = .label.withAlphaComponent(0.5)
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.text = "Тут будет статистика когда кто то будет выдвинут"
+        self.label = label
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -44,43 +55,24 @@ class DayResultVC: UIViewController {
         tableView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         tableView.constraintToParent()
         tableView.contentInset.bottom = 80
+        tableView.insetsLayoutMarginsFromSafeArea = false
+        tableView.preservesSuperviewLayoutMargins = false
         tableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.identifier)
         
         buttonVC = .init(didTap: { [weak self] () in
             self?.didTapDoneButton()
         })
         add(buttonVC)
-        buttonVC.buttonTitle = "Ok"
-        
-        handleData()
+        buttonVC.buttonTitle = "Применить"
     }
-    
-    private func handleData() {
-        if !dayModel.kickedPlayers.isEmpty {
-            var t: [String] = []
-            dayModel.kickedPlayers.forEach { ind in
-                t.append("\(ind + 1)")
-            }
-            output.append((t.count == 1 ? "Исключен: " : "Исключены: ") + t.joined(separator: ", "))
-        }
-        else {
-            output.append("Никто не исключен")
-            return
-        }
-        dayModel.votedPlayers.sorted(by: { v1, v2 in
-            v1.to < v2.to
-        }).forEach { v1 in
-            output.append("За исключение \(v1.to + 1): \(v1.voteCount)")
-        }
-        output.append("Воздержалось: \(dayModel.nonVotedPlayersCount)")
-    }
-    
+
     @objc private func didTapDoneButton() {
         onComplete()
+        navigationController?.popViewController(animated: true)
     }
 }
 
-extension DayResultVC: UITableViewDelegate, UITableViewDataSource {
+extension DayVoteStatisticVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         UIView()
     }
@@ -90,7 +82,12 @@ extension DayResultVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        output.count
+        let count = dayModel.votedPlayers.count
+        if count > 0 {
+            label?.removeFromSuperview()
+            label = nil
+        }
+        return count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,8 +97,14 @@ extension DayResultVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.identifier, for: indexPath) as! LabelTableViewCell
         
-        cell.title = output[indexPath.section]
-        
+        let votedPlayer = dayModel.votedPlayers[indexPath.section]
+        cell.title = "Выдвинут: \(votedPlayer.to + 1) Игроком: \(votedPlayer.by + 1) Голосов: \(votedPlayer.voteCount)"
+
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
 }
+

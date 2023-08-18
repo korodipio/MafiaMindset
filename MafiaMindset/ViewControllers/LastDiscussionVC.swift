@@ -1,19 +1,17 @@
 //
-//  VotedPlayersDiscussionVC.swift
+//  LastDiscussionVC.swift
 //  MafiaMindset
 //
-//  Created by Aghasif Guliyev on 13.08.23.
+//  Created by Aghasif Guliyev on 18.08.23.
 //
 
 import UIKit
 
-class VotedPlayersDiscussionVC: UIViewController {
-
+class LastDiscussionVC: UIViewController {
+    
     private let onComplete: () -> Void
     private let dayModel: DayModel
-    private var players: [DayVoteModel] = []
     private let timerView = TimerView()
-    private var currentPlayerIndex = 0
     private var buttonVC: ButtonVC!
     
     init(dayModel: DayModel, onComplete: @escaping () -> Void) {
@@ -32,38 +30,30 @@ class VotedPlayersDiscussionVC: UIViewController {
     }
     
     private func setupUi() {
+        let t = dayModel.kickedPlayers.compactMap { ind in
+            "\(ind + 1)"
+        }.joined(separator: ", ")
+        title = "День. Последнее слово " + t
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
         
-        players = dayModel.votedPlayers.sorted(by: { v1, v2 in
-            v1.to < v2.to
-        })
-        
         view.addSubview(timerView)
         timerView.constraintToParent()
-        timerView.seconds = 30
-        
-        buttonVC = .init(didTap: { [weak self] () in
-            self?.didTapDoneButton()
-        })
-        add(buttonVC)
-        buttonVC.buttonTitle = "Далее"
-        
-        prepare()
-    }
-    
-    private func prepare() {
-        title = "Оправдание \((players.first?.to ?? 0) + 1)"
-    }
-    
-    @objc private func didTapDoneButton() {
-        currentPlayerIndex += 1
-        guard currentPlayerIndex < players.count else {
-            onComplete()
-            return
+        timerView.seconds = 60
+        timerView.onComplete = { [weak self] () in
+            guard let self else { return }
+            self.onComplete()
         }
         
-        timerView.reset(seconds: 30)
-        title = "Оправдание \(players[currentPlayerIndex].to + 1)"
+        buttonVC = .init(didTap: { [weak self] () in
+            self?.didTapSkipButton()
+        })
+        buttonVC.buttonTitle = "Пропустить"
+        add(buttonVC)
+    }
+    
+    @objc private func didTapSkipButton() {
+        timerView.pause()
+        onComplete()
     }
 }

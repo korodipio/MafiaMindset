@@ -63,18 +63,18 @@ class NightModel {
 class DayVoteModel {
     var by: Int = 0
     var to: Int = 0
+    var voteCount: Int = 0
 }
 
 class DayModel {
     var votedPlayerCount: Int {
         var votedPlayersCount = 0
-        numberOfVote.forEach { v1 in
-            votedPlayersCount += v1.value
+        votedPlayers.forEach { v1 in
+            votedPlayersCount += v1.voteCount
         }
         return votedPlayersCount
     }
-    
-    var numberOfVote: [Int: Int] = [:]
+
     var votedPlayers: [DayVoteModel] = []
     var kickedPlayers: [Int] = []
     var nonVotedPlayersCount: Int = 0
@@ -125,11 +125,28 @@ class SessionModel {
         let pl = Set((roleAndPlayers[.maf] ?? []) + (roleAndPlayers[.boss] ?? []))
         return pl != pl.subtracting(deadPlayers + kickedPlayers)
     }
-    var isCommissarAlive: Bool {
-        guard commissarCount > 0 else { return false }
-        let pl = Set(roleAndPlayers[.commissar] ?? [])
+    
+    func isAlive(role: SessionRoleId) -> Bool {
+        guard let rpl = roleAndPlayers[role] else { return false }
+        let pl = Set(rpl)
         return pl == pl.subtracting(deadPlayers + kickedPlayers)
     }
+    
+//    var isCommissarAlive: Bool {
+//        guard commissarCount > 0 else { return false }
+//        let pl = Set(roleAndPlayers[.commissar] ?? [])
+//        return pl == pl.subtracting(deadPlayers + kickedPlayers)
+//    }
+//    var isPatrolAlive: Bool {
+//        guard patrolCount > 0 else { return false }
+//        let pl = Set(roleAndPlayers[.patrol] ?? [])
+//        return pl == pl.subtracting(deadPlayers + kickedPlayers)
+//    }
+//    var isWolfAlive: Bool {
+//        guard wolfCount > 0 else { return false }
+//        let pl = Set(roleAndPlayers[.wolf] ?? [])
+//        return pl == pl.subtracting(deadPlayers + kickedPlayers)
+//    }
     
     var winner: SessionRoleId? {
         let mafRoles: [SessionRoleId] = [.maf, .boss, .wolf]
@@ -152,6 +169,9 @@ class SessionModel {
         let aliveManiac = alive[.maniac]?.count ?? 0
         let actives = aliveMaf + aliveManiac
         
+        if aliveMaf > aliveManiac && inactives == 0 {
+            return .maf
+        }
         if actives >= inactives {
             if aliveManiac == 0 {
                 return .maf

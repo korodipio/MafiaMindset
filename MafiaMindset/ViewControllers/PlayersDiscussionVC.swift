@@ -86,7 +86,7 @@ class PlayersDiscussionVC: UIViewController {
         
         players.forEach { ind in
             let action = UIAlertAction(title: "\(ind + 1)", style: .default) { _ in
-                self.initVoteKick(by: self.currentPlayerIndex, to: ind)
+                self.initVoteKick(by: self.players[self.currentPlayerIndex], to: ind)
                 complete()
             }
             vc.addAction(action)
