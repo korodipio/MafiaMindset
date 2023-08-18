@@ -9,9 +9,11 @@ import UIKit
 
 class RootVC: UIViewController {
     
+    private let transitionManager = SessionTransitionManager()
     private var label: UILabel?
     private let storageViewModel = StorageSessionViewModel()
     private let tableView = UITableView()
+    private var selectedCellIndex: IndexPath?
     private var models: [SessionModel] = []
     let v = TimerView()
     
@@ -98,6 +100,8 @@ class RootVC: UIViewController {
         tableView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         tableView.constraintToParent()
         tableView.register(SessionTableViewCell.self, forCellReuseIdentifier: SessionTableViewCell.identifier)
+        
+        transitionManager.presentingFromVC = self
     }
     
     @objc private func didTapCreateSessionButton() {
@@ -177,10 +181,15 @@ extension RootVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedCellIndex = indexPath
+
         let model = models[indexPath.section]
-        guard model.winner == nil else { return }
-        
-        startDayNight(model)
+        let vc = SessionVC(model: model) { [weak self] () in
+            self?.startDayNight(model)
+        }
+        vc.modalPresentationStyle = .overFullScreen
+        vc.transitioningDelegate = transitionManager
+        present(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -193,6 +202,12 @@ extension RootVC: UITableViewDelegate, UITableViewDataSource {
 
         deleteSession(model)
         tableView.deleteSections([indexPath.section], with: .automatic)
+    }
+    
+    // Used by animation manager
+    func selectedViewCell() -> SessionTableViewCell? {
+        guard let index = selectedCellIndex else { return nil }
+        return tableView.cellForRow(at: index) as? SessionTableViewCell
     }
 }
 

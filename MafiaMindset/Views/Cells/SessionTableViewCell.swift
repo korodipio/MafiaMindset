@@ -11,13 +11,13 @@ class SessionTableViewCell: UITableViewCell {
     
     static let identifier = "SessionTableViewCell"
 
-    weak var model: SessionModel? {
+    var model: SessionModel? {
         didSet {
             didChangeModel()
         }
     }
     private var isSetupUi = false
-    private let sessionView = SessionView()
+    let sessionView = SessionView()
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -35,13 +35,17 @@ class SessionTableViewCell: UITableViewCell {
         
         selectionStyle = .none
         clipsToBounds = false
-        contentView.layer.cornerRadius = 12
-        contentView.clipsToBounds = true
-        contentView.backgroundColor = .systemBackground
+        contentView.backgroundColor = .clear
         backgroundColor = .clear
+        
+        contentView.layer.shadowColor = UIColor.black.cgColor
+        contentView.layer.shadowRadius = 6
+        contentView.layer.shadowOffset = .init(width: 0, height: 1)
+        contentView.layer.shadowOpacity = 0.1
         
         contentView.addSubview(sessionView)
         sessionView.constraintToParent()
+        sessionView.type = .compact
     }
 
     private func didChangeModel() {
