@@ -15,6 +15,7 @@ class StorageNightModel: Object {
     @Persisted var patrol: Int?
     @Persisted var bloodhound: Int?
     @Persisted var medic: Int?
+    @Persisted var lover: Int?
     @Persisted var dies = List<Int>()
 }
 
@@ -33,6 +34,7 @@ class StorageSessionModel: Object {
     @Persisted var patrolCount: Int = 0
     @Persisted var maniacCount: Int = 0
     @Persisted var bloodhoundCount: Int = 0
+    @Persisted var loverCount: Int = 0
     @Persisted var civCount: Int = 0
     @Persisted var players = Map<String, String>()
     @Persisted var kickedPlayers = List<Int>()

@@ -77,6 +77,9 @@ class NightResultVC: UIViewController {
         if let r = nightModel.maniac {
             output.append("Выбор Маньяка: \(r + 1)")
         }
+        if let r = nightModel.lover {
+            output.append("Выбор Любовницы: \(r + 1)")
+        }
         if let r = nightModel.commissar {
             output.append("Выбор Комиссара: \(r + 1)")
         }

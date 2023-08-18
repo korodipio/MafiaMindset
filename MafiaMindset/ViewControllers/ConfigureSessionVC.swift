@@ -69,11 +69,12 @@ class ConfigureSessionVC: UIViewController {
             self?.didTapDoneButton()
         })
         add(buttonVC)
-        buttonVC.buttonTitle = "Применить"
+        buttonVC.buttonTitle = isEditable ? "Применить" : "Вернуться"
     }
     
     private func didChangeIsEditable() {
         rightButtonItem.image = .init(systemName: isEditable ? "lock.open" : "lock")
+        buttonVC?.buttonTitle = isEditable ? "Применить" : "Вернуться"
     }
     
     @objc private func didTapDoneButton() {

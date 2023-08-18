@@ -25,6 +25,12 @@ class RootVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadSessions(reload: true)
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     private func loadSessions(reload: Bool) {

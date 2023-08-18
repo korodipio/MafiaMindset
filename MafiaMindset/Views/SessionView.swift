@@ -31,6 +31,9 @@ class SessionView: UIView {
     private let titleLabel = UILabel()
     private lazy var winnerImageView = UIImageView()
     private var buttonVC: ButtonVC!
+    private var showContinueButton: Bool {
+        model?.winner == nil
+    }
     
     init() {
         super.init(frame: .zero)
@@ -45,8 +48,8 @@ class SessionView: UIView {
         backgroundColor = .clear
         clipsToBounds =  true
         layer.cornerRadius = 12
-        layer.borderColor = UIColor.primary?.cgColor
-        layer.borderWidth = 2
+//        layer.borderColor = UIColor.primary?.cgColor
+//        layer.borderWidth = 1
         
         addSubview(vStack)
         vStack.backgroundColor = .systemBackground
@@ -92,6 +95,23 @@ class SessionView: UIView {
         handleData(model: model)
     }
     
+    private func updateContinueButton() {
+        switch type {
+        case .compact:
+            vStack.layoutMargins.bottom = 15
+            buttonVC.view.alpha = 0
+            
+        case .full:
+            if !showContinueButton {
+                vStack.layoutMargins.bottom = 15
+                buttonVC.view.alpha = 0
+            } else {
+                vStack.layoutMargins.bottom = 50 + 15 + 12
+                buttonVC.view.alpha = 1
+            }
+        }
+    }
+    
     private func clearAll() {
         stack.arrangedSubviews.forEach { view in
             view.removeFromSuperview()
@@ -101,16 +121,14 @@ class SessionView: UIView {
     private func didChangeType() {
         switch type {
         case .compact:
-            vStack.layoutMargins.bottom = 15
+            updateContinueButton()
             stack.isHidden = true
             stack.alpha = 0
-            buttonVC.view.alpha = 0
             
         case .full:
-            vStack.layoutMargins.bottom = 50 + 15 + 12
+            updateContinueButton()
             stack.isHidden = false
             stack.alpha = 1
-            buttonVC.view.alpha = 1
         }
     }
     
@@ -162,7 +180,7 @@ class SessionView: UIView {
             let i2 = SessionRoleId.roleWakeUpOrder.firstIndex(of: v2.key)!
             return i1 < i2
         }.forEach { (role: SessionRoleId, players: [Int]) in
-            let pl = players.compactMap { ind in
+            let pl = players.sorted().compactMap { ind in
                 "\(ind + 1)"
             }.joined(separator: ", ")
             createAndAddCell(title: role.title, value: "\(pl)")

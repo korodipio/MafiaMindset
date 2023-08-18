@@ -116,6 +116,12 @@ class CreateSessionVC: UIViewController {
         bloodhoundCell.isChecked = false
         cells.append(bloodhoundCell)
         
+        let loverCell = BoolRoleTableViewCell()
+        loverCell.title = "Любовница"
+        loverCell.id = SessionCellId.lover
+        loverCell.isChecked = false
+        cells.append(loverCell)
+        
         // installing callback
         cells.forEach { cell in
             cell.onUpdate = { [weak self] roleCell in
@@ -160,6 +166,9 @@ class CreateSessionVC: UIViewController {
         case .bloodhound:
             guard let cell = cell as? BoolRoleTableViewCell else { return }
             model.isBloodhoundExists = cell.isChecked
+        case .lover:
+            guard let cell = cell as? BoolRoleTableViewCell else { return }
+            model.isLoverExists = cell.isChecked
         }
         let totalCell = cellBy(id: .total) as! IntRoleTableViewCell
         let totalCount = totalCell.intValue ?? 0

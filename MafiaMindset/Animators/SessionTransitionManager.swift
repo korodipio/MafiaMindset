@@ -14,7 +14,7 @@ class SessionTransitionManager: NSObject {
         
         var next: AnimationDirection { return self == .present ? .dismiss : .present }
         var animationBlurViewAlpha: CGFloat { return self == .present ? 0.8 : 0 }
-        var animationDimmingViewAlpha: CGFloat { return self == .present ? 0.2 : 0 }
+        var animationDimmingViewAlpha: CGFloat { return self == .present ? 0.5 : 0 }
     }
     
     private var animationDirection: AnimationDirection = .present

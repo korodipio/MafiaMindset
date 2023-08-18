@@ -108,8 +108,26 @@ class CardAssignmentVC: UIViewController {
         if model.isCivExists {
             roles[.civ] = model.civCount
         }
+        if model.isLoverExists {
+            roles[.lover] = model.loverCount
+        }
         
         return roles
+    }
+    
+    private func showConfirmation(player: Int, role: SessionRoleId, _ confirmed: @escaping () -> Void) {
+        let vc = UIAlertController(title: "Игрок \(player + 1) - \(role.title)", message: "Подтверди свой выбор", preferredStyle: .alert)
+        vc.view.tintColor = .black
+        
+        let roleAction = UIAlertAction(title: "Подтверждаю", style: .default) { _ in
+            confirmed()
+        }
+        vc.addAction(roleAction)
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        vc.addAction(cancelAction)
+        
+        present(vc, animated: true)
     }
     
     @objc private func didTapAssignButton() {
@@ -120,7 +138,9 @@ class CardAssignmentVC: UIViewController {
             v1.key.title < v2.key.title
         }.forEach { (role: SessionRoleId, count: Int) in
             let roleAction = UIAlertAction(title: "\(role.title) - \(count)", style: .default) { _ in
-                self.assignRoleToPlayer(with: self.currentPlayerIndex, role: role)
+                self.showConfirmation(player: self.currentPlayerIndex, role: role) {
+                    self.assignRoleToPlayer(with: self.currentPlayerIndex, role: role)
+                }
             }
             vc.addAction(roleAction)
         }
@@ -153,6 +173,8 @@ class CardAssignmentVC: UIViewController {
             model.maniacCount -= 1
         case .bloodhound:
             model.bloodhoundCount -= 1
+        case .lover:
+            model.loverCount -= 1
         }
         
         return model.totalCount

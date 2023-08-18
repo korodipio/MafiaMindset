@@ -41,7 +41,7 @@ class SessionTableViewCell: UITableViewCell {
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowRadius = 6
         contentView.layer.shadowOffset = .init(width: 0, height: 1)
-        contentView.layer.shadowOpacity = 0.1
+//        contentView.layer.shadowOpacity = 0.1
         
         contentView.addSubview(sessionView)
         sessionView.constraintToParent()

@@ -8,7 +8,14 @@
 import RealmSwift
 
 class StorageSessionViewModel {
-    private let realm = try! Realm()
+    private var realm: Realm!
+    
+    init() {
+        let config = Realm.Configuration(
+            schemaVersion: 3)
+        Realm.Configuration.defaultConfiguration = config
+        realm = try! Realm()
+    }
     
     func clearAll() {
         try! realm.write({
@@ -32,6 +39,7 @@ class StorageSessionViewModel {
             n.mafia = sn.mafia
             n.boss = sn.boss
             n.maniac = sn.maniac
+            n.lover = sn.lover
             n.commissar = sn.commissar
             n.patrol = sn.patrol
             n.bloodhound = sn.bloodhound
@@ -56,6 +64,7 @@ class StorageSessionViewModel {
             s.commissarCount = sm.commissarCount
             s.patrolCount = sm.patrolCount
             s.maniacCount = sm.maniacCount
+            s.loverCount = sm.loverCount
             s.bloodhoundCount = sm.bloodhoundCount
             s.civCount = sm.civCount
             s.days = getDaysFromStorage(sm)

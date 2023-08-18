@@ -17,6 +17,7 @@ enum SessionCellId: String {
     case patrol = "Patrol"
     case maniac = "Maniac"
     case bloodhound = "Bloodhound"
+    case lover = "Lover"
 }
 
 class RoleTableViewCell: UITableViewCell {

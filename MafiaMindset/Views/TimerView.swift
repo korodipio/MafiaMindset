@@ -159,8 +159,6 @@ class TimerView: UIView {
         guard Int(seconds) != 0 else { return }
         self.seconds = seconds
         
-        UIApplication.shared.isIdleTimerDisabled = true
-        
         var initInterval = Date.now.timeIntervalSince1970
         let timer = Timer(fire: .now, interval: 0.1, repeats: true) { [weak self] timer in
             guard let self else { timer.invalidate(); return }
@@ -196,7 +194,6 @@ class TimerView: UIView {
     private func stop() {
         timer?.invalidate()
         timer = nil
-        UIApplication.shared.isIdleTimerDisabled = false
         
         state = .paused
         DispatchQueue.main.async {

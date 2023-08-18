@@ -2,7 +2,7 @@ import UIKit
 import RealmSwift
 
 enum SessionRoleId: String, CaseIterable {
-    static let roleWakeUpOrder: [SessionRoleId] = [.maf, .boss, .wolf, .maniac, .commissar, .patrol, .bloodhound, .medic, .civ]
+    static let roleWakeUpOrder: [SessionRoleId] = [.maf, .boss, .wolf, .maniac, .lover, .commissar, .patrol, .bloodhound, .medic, .civ]
     
     case civ = "Civilian"
     case maf = "Mafia"
@@ -13,6 +13,7 @@ enum SessionRoleId: String, CaseIterable {
     case patrol = "Patrol"
     case maniac = "Maniac"
     case bloodhound = "Bloodhound"
+    case lover = "Lover"
     
     var title: String {
         switch self {
@@ -34,6 +35,8 @@ enum SessionRoleId: String, CaseIterable {
             return "Маньяк"
         case .bloodhound:
             return "Ищейка"
+        case .lover:
+            return "Любовница"
         }
     }
 }
@@ -56,6 +59,7 @@ class NightModel {
     var patrol: Int?
     var bloodhound: Int?
     var medic: Int?
+    var lover: Int?
     
     var dies: [Int] = []
 }
@@ -131,23 +135,7 @@ class SessionModel {
         let pl = Set(rpl)
         return pl == pl.subtracting(deadPlayers + kickedPlayers)
     }
-    
-//    var isCommissarAlive: Bool {
-//        guard commissarCount > 0 else { return false }
-//        let pl = Set(roleAndPlayers[.commissar] ?? [])
-//        return pl == pl.subtracting(deadPlayers + kickedPlayers)
-//    }
-//    var isPatrolAlive: Bool {
-//        guard patrolCount > 0 else { return false }
-//        let pl = Set(roleAndPlayers[.patrol] ?? [])
-//        return pl == pl.subtracting(deadPlayers + kickedPlayers)
-//    }
-//    var isWolfAlive: Bool {
-//        guard wolfCount > 0 else { return false }
-//        let pl = Set(roleAndPlayers[.wolf] ?? [])
-//        return pl == pl.subtracting(deadPlayers + kickedPlayers)
-//    }
-    
+
     var winner: SessionRoleId? {
         let mafRoles: [SessionRoleId] = [.maf, .boss, .wolf]
         let inactiveRoles: [SessionRoleId] = [.medic, .commissar, .patrol, .bloodhound, .civ]
@@ -195,6 +183,7 @@ class SessionModel {
     var patrolCount: Int = 0
     var maniacCount: Int = 0
     var bloodhoundCount: Int = 0
+    var loverCount: Int = 0
     var civCount: Int = 0
     
     func copy() -> SessionModel {
@@ -208,15 +197,16 @@ class SessionModel {
         m.patrolCount = patrolCount
         m.maniacCount = maniacCount
         m.bloodhoundCount = bloodhoundCount
+        m.loverCount = loverCount
         m.civCount = civCount
         return m
     }
     
     var activeCount: Int {
-        mafCount + bossCount + wolfCount + medicCount + commissarCount + patrolCount + maniacCount + bloodhoundCount
+        mafCount + bossCount + wolfCount + medicCount + commissarCount + patrolCount + maniacCount + bloodhoundCount + loverCount
     }
     var totalCount: Int {
-        mafCount + bossCount + wolfCount + medicCount + commissarCount + patrolCount + maniacCount + bloodhoundCount + civCount
+        mafCount + bossCount + wolfCount + medicCount + commissarCount + patrolCount + maniacCount + bloodhoundCount + loverCount + civCount
     }
     
     var isWolfWakedUp = false
@@ -254,5 +244,9 @@ class SessionModel {
     var isBloodhoundExists: Bool {
         get { bloodhoundCount != 0 }
         set { bloodhoundCount = newValue ? 1 : 0 }
+    }
+    var isLoverExists: Bool {
+        get { loverCount != 0 }
+        set { loverCount = newValue ? 1 : 0 }
     }
 }
