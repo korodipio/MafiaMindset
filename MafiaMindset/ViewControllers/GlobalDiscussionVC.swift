@@ -10,10 +10,16 @@ import UIKit
 class GlobalDiscussionVC: UIViewController {
     
     private let onComplete: () -> Void
+    private let model: SessionModel
     private let timerView = TimerView()
     private var buttonVC: ButtonVC!
     
-    init(onComplete: @escaping () -> Void) {
+    private var lastNightLoverSelection: Int? {
+        return model.isAlive(role: .lover) ? model.nights.last?.lover : nil
+    }
+    
+    init(model: SessionModel, onComplete: @escaping () -> Void) {
+        self.model = model
         self.onComplete = onComplete
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,6 +47,13 @@ class GlobalDiscussionVC: UIViewController {
         })
         buttonVC.buttonTitle = "Пропустить"
         add(buttonVC)
+        
+        if let lastNightLoverSelection {
+            let vc = UIAlertController(title: "Игрок \(lastNightLoverSelection + 1) не учавствует и не голосует из-за любовницы", message: nil, preferredStyle: .alert)
+            vc.view.tintColor = .black
+            vc.addAction(.init(title: "Ok", style: .cancel))
+            present(vc, animated: true)
+        }
     }
     
     @objc private func didTapSkipButton() {

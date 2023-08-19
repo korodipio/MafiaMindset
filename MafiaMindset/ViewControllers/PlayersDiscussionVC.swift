@@ -17,6 +17,10 @@ class PlayersDiscussionVC: UIViewController {
     private var currentPlayerIndex = 0
     private var buttonVC: ButtonVC!
     
+    private var lastNightLoverSelection: Int? {
+        return model.isAlive(role: .lover) ? model.nights.last?.lover : nil
+    }
+    
     init(model: SessionModel, dayModel: DayModel, onComplete: @escaping () -> Void) {
         self.model = model
         self.dayModel = dayModel
@@ -38,7 +42,13 @@ class PlayersDiscussionVC: UIViewController {
         navigationItem.hidesBackButton = true
         
         players = model.aliveRolePlayers.flatMap { v1 in
-            v1.value
+            var v = v1.value
+            if let lastNightLoverSelection {
+                v.removeAll { ind in
+                    ind == lastNightLoverSelection
+                }
+            }
+            return v
         }.sorted().shifted(by: model.days.count)
         title = "Выдвижение. Игрок \((players.first ?? 0) + 1)"
         

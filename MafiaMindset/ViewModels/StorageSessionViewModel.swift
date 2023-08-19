@@ -44,6 +44,7 @@ class StorageSessionViewModel {
             n.patrol = sn.patrol
             n.bloodhound = sn.bloodhound
             n.medic = sn.medic
+            n.lover = sn.lover
             sn.dies.forEach { ind in
                 n.dies.append(ind)
             }
@@ -106,6 +107,7 @@ class StorageSessionViewModel {
             sn.patrol = n.patrol
             sn.bloodhound = n.bloodhound
             sn.medic = n.medic
+            sn.lover = n.lover
             n.dies.forEach { ind in
                 sn.dies.append(ind)
             }

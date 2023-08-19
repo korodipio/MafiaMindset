@@ -29,7 +29,7 @@ class DayVoteStatisticVC: UIViewController {
         super.viewDidLoad()
         setupUi()
     }
-    
+
     private func setupUi() {
         title = "Статистика дня"
         view.backgroundColor = .secondarySystemBackground
@@ -63,7 +63,7 @@ class DayVoteStatisticVC: UIViewController {
             self?.didTapDoneButton()
         })
         add(buttonVC)
-        buttonVC.buttonTitle = "Применить"
+        buttonVC.buttonTitle = "Вернуться"
     }
 
     @objc private func didTapDoneButton() {

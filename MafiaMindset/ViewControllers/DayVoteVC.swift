@@ -20,6 +20,10 @@ class DayVoteVC: UIViewController {
     private let numberLabel = LTMorphingLabel()
     private var buttonVC: ButtonVC!
     
+    private var lastNightLoverSelection: Int? {
+        return model.isAlive(role: .lover) ? model.nights.last?.lover : nil
+    }
+    
     init(model: SessionModel, dayModel: DayModel, onComplete: @escaping () -> Void) {
         self.onComplete = onComplete
         self.model = model
@@ -70,6 +74,13 @@ class DayVoteVC: UIViewController {
         add(buttonVC)
         buttonVC.buttonTitle = "Проголосовать"
         
+        if let lastNightLoverSelection {
+            let vc = UIAlertController(title: "Игрок \(lastNightLoverSelection + 1) не голосует", message: nil, preferredStyle: .alert)
+            vc.view.tintColor = .black
+            vc.addAction(.init(title: "Ok", style: .cancel))
+            present(vc, animated: true)
+        }
+        
         prepare()
     }
     
@@ -99,16 +110,16 @@ class DayVoteVC: UIViewController {
     }
     
     private func availableVotesCount() -> Int {
-        let alivePlayersCount = model.alivePlayersCount
+        let alivePlayersCount = model.alivePlayersCount - (lastNightLoverSelection != nil ? 1 : 0)
         let votedPlayersCount = dayModel.votedPlayerCount
         let nonVotedPlayersCount = alivePlayersCount - votedPlayersCount
         return nonVotedPlayersCount
     }
     
     private func finishVote() {
-        let alivePlayersCount = model.alivePlayersCount
-        let votedPlayersCount = dayModel.votedPlayerCount
-        let nonVotedPlayersCount = alivePlayersCount - votedPlayersCount
+//        let alivePlayersCount = model.alivePlayersCount
+//        let votedPlayersCount = dayModel.votedPlayerCount
+        let nonVotedPlayersCount = availableVotesCount()
         
         let sorted = players.sorted { v1, v2 in
             v1.voteCount > v2.voteCount

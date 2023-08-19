@@ -118,7 +118,7 @@ class NightView: UIView {
             let i2 = SessionRoleId.roleWakeUpOrder.firstIndex(of: v2.role)!
             return i1 < i2
         })
-        
+
         var messagesToShow: [String] = []
         if model.isWolfExists && model.isAlive(role: .wolf) && model.isAnyMafiaOrBossDeadOrKicked && !model.isWolfWakedUp {
             model.isWolfWakedUp = true
@@ -162,10 +162,14 @@ class NightView: UIView {
         }
     }
     
-    private func showAlert(title: String?, message: String? = nil) {
+    private func showAlert(title: String?, message: String? = nil, completed: (() -> Void)? = nil) {
         let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
         vc.view.tintColor = .black
-        vc.addAction(.init(title: "Ok", style: .cancel))
+        
+        let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
+            completed?()
+        }
+        vc.addAction(okAction)
         presentedVC?.present(vc, animated: true)
     }
     
@@ -204,10 +208,10 @@ class NightView: UIView {
                     } else if self.model.isPatrolExists {
                         isCorrect = self.playersWith(roles: [.patrol]).contains(ind)
                     }
-                    self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil)
-                    
                     self.nightModel.boss = ind
-                    complete()
+                    self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil) {
+                        complete()
+                    }
                 }
                 vc.addAction(action)
             }
@@ -236,21 +240,23 @@ class NightView: UIView {
             }
             playersWithAnother(roles: [role]).sorted().forEach { ind in
                 let action = UIAlertAction(title: "\(ind + 1)", style: .default) { _ in
+                    self.nightModel.commissar = ind
                     
                     var takenByLover = false
                     if let loverSelection = self.nightModel.lover {
                         takenByLover = loverSelection == ind
                     }
                     if takenByLover {
-                        self.showAlert(title: "Мимо", message: nil)
+                        self.showAlert(title: "Мимо", message: nil) {
+                            complete()
+                        }
                     }
                     else {
                         let isCorrect = self.playersWith(roles: self.model.isWolfWakedUp ? [.boss, .maf, .wolf] : [.boss, .maf]).contains(ind)
-                        self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil)
+                        self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil) {
+                            complete()
+                        }
                     }
-                        
-                    self.nightModel.commissar = ind
-                    complete()
                 }
                 vc.addAction(action)
             }
@@ -266,21 +272,23 @@ class NightView: UIView {
             }
             playersWithAnother(roles: [role]).sorted().forEach { ind in
                 let action = UIAlertAction(title: "\(ind + 1)", style: .default) { _ in
+                    self.nightModel.patrol = ind
                     
                     var takenByLover = false
                     if let loverSelection = self.nightModel.lover {
                         takenByLover = loverSelection == ind
                     }
                     if takenByLover {
-                        self.showAlert(title: "Мимо", message: nil)
+                        self.showAlert(title: "Мимо", message: nil) {
+                            complete()
+                        }
                     }
                     else {
                         let isCorrect = self.playersWith(roles: self.model.isWolfWakedUp ? [.boss, .maf, .wolf] : [.boss, .maf]).contains(ind)
-                        self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil)
+                        self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil) {
+                            complete()
+                        }
                     }
-
-                    self.nightModel.patrol = ind
-                    complete()
                 }
                 vc.addAction(action)
             }
@@ -292,21 +300,23 @@ class NightView: UIView {
             }
             playersWithAnother(roles: [role]).sorted().forEach { ind in
                 let action = UIAlertAction(title: "\(ind + 1)", style: .default) { _ in
+                    self.nightModel.bloodhound = ind
                     
                     var takenByLover = false
                     if let loverSelection = self.nightModel.lover {
                         takenByLover = loverSelection == ind
                     }
                     if takenByLover {
-                        self.showAlert(title: "Мимо", message: nil)
+                        self.showAlert(title: "Мимо", message: nil) {
+                            complete()
+                        }
                     }
                     else {
                         let isCorrect = self.playersWith(roles: [.maniac]).contains(ind)
-                        self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil)
+                        self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil) {
+                            complete()
+                        }
                     }
-                    
-                    self.nightModel.bloodhound = ind
-                    complete()
                 }
                 vc.addAction(action)
             }
@@ -429,6 +439,13 @@ class NightView: UIView {
             let isLoverDead = nightModel.dies.contains(alivePlayerWith(roles: [.lover]).first!)
             if isLoverDead {
                 nightModel.dies.append(loverSelection)
+//                if let healedByMedic = nightModel.medic {
+//                    if healedByMedic != loverSelection {
+//                        nightModel.dies.append(loverSelection)
+//                    }
+//                } else {
+//                    nightModel.dies.append(loverSelection)
+//                }
             }
             else {
                 nightModel.dies.removeAll { ind in
@@ -436,7 +453,7 @@ class NightView: UIView {
                 }
             }
         }
-        
+
         // Removes duplicates
         nightModel.dies = Array(Set(nightModel.dies))
         model.deadPlayers.insert(contentsOf: nightModel.dies, at: 0)

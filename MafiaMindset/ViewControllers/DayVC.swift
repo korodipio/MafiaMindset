@@ -103,7 +103,7 @@ class DayVC: UIViewController {
     @objc private func didTabStartButton() {
         switch state {
         case .globalDiscussion:
-            let vc = GlobalDiscussionVC(onComplete: { [weak self] () in
+            let vc = GlobalDiscussionVC(model: model, onComplete: { [weak self] () in
                 guard let self else { return }
                 self.state = .playerDiscussion
                 self.navigationController?.popToViewController(self, animated: true)

@@ -138,7 +138,7 @@ class SessionModel {
 
     var winner: SessionRoleId? {
         let mafRoles: [SessionRoleId] = [.maf, .boss, .wolf]
-        let inactiveRoles: [SessionRoleId] = [.medic, .commissar, .patrol, .bloodhound, .civ]
+        let inactiveRoles: [SessionRoleId] = [.lover, .medic, .commissar, .patrol, .bloodhound, .civ]
         
         let alive = aliveRolePlayers
         
