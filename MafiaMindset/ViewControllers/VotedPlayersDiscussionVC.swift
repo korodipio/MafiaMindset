@@ -35,9 +35,7 @@ class VotedPlayersDiscussionVC: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
         
-        players = dayModel.votedPlayers.sorted(by: { v1, v2 in
-            v1.to < v2.to
-        })
+        players = dayModel.votedPlayers
         
         view.addSubview(timerView)
         timerView.constraintToParent()

@@ -9,7 +9,7 @@ import UIKit
 import LTMorphingLabel
 
 class DayVoteVC: UIViewController {
-
+    
     var revoting = false
     private let onComplete: () -> Void
     private let model: SessionModel
@@ -39,13 +39,16 @@ class DayVoteVC: UIViewController {
         super.viewDidLoad()
         setupUi()
     }
-
+    
     private func setupUi() {
         title = revoting ? "Переголосование" : "Голосование"
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
         
         players = dayModel.votedPlayers
+        players.forEach { voteModel in
+            voteModel.voteCount = 0
+        }
         currentPlayerIndex = 0
         
         titleLabel.text = "Об исключении игрока под номером"
@@ -91,7 +94,7 @@ class DayVoteVC: UIViewController {
     private func handle(complete: @escaping () -> Void) {
         let vc = UIAlertController(title: "Исключение", message: nil, preferredStyle: .alert)
         vc.view.tintColor = .black
-
+        
         var tf: UITextField!
         vc.addTextField { textField in
             tf = textField
@@ -117,9 +120,10 @@ class DayVoteVC: UIViewController {
     }
     
     private func finishVote() {
-//        let alivePlayersCount = model.alivePlayersCount
-//        let votedPlayersCount = dayModel.votedPlayerCount
         let nonVotedPlayersCount = availableVotesCount()
+        
+        players.last?.voteCount += nonVotedPlayersCount
+        dayModel.nonVotedPlayersCount = nonVotedPlayersCount
         
         let sorted = players.sorted { v1, v2 in
             v1.voteCount > v2.voteCount
@@ -128,39 +132,36 @@ class DayVoteVC: UIViewController {
         if sorted.count >= 2 {
             let f = sorted[0]
             let maxVotes = f.voteCount
-            if maxVotes > nonVotedPlayersCount {
+            let mostVotedPlayers = players.compactMap { voteModel -> DayVoteModel? in
+                guard voteModel.voteCount == maxVotes else { return nil }
+                return voteModel
+            }
+            if mostVotedPlayers.count >= 2 {
+                let vc = UIAlertController(title: "Что делать будем дальше?", message: nil, preferredStyle: .alert)
+                vc.view.tintColor = .black
                 
-                let mostVotedPlayers = players.compactMap { voteModel -> DayVoteModel? in
-                    guard voteModel.voteCount == maxVotes else { return nil }
-                    voteModel.voteCount = 0
-                    return voteModel
-                }
-                if mostVotedPlayers.count >= 2 {
-                    dayModel.votedPlayers = mostVotedPlayers
-                    let vc = DayVoteVC(model: model, dayModel: dayModel) { [weak self] () in
+                let continueAction = UIAlertAction(title: "Переголосование", style: .default) { _ in
+                    self.dayModel.votedPlayers = mostVotedPlayers
+                    let vc = DayVoteVC(model: self.model, dayModel: self.dayModel) { [weak self] () in
                         guard let self else { return }
                         self.onComplete()
                     }
-                    vc.navigationItem.leftBarButtonItem = navigationItem.leftBarButtonItem
+                    vc.navigationItem.leftBarButtonItem = self.navigationItem.leftBarButtonItem
                     vc.revoting = true
-                    navigationController?.pushViewController(vc, animated: true)
-                    return
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }
+                let cancelAction = UIAlertAction(title: "Никого не исключать и продолжить", style: .cancel) { _ in
+                    self.onComplete()
+                }
+                vc.addAction(continueAction)
+                vc.addAction(cancelAction)
+                
+                present(vc, animated: true)
+                return
             }
         }
         
-        players.forEach { m in
-            print(m.by, m.to, m.voteCount)
-        }
-        
-        let maxVotes = sorted.first?.voteCount ?? 0
-        var mostVotedPlayer = 0
-        if nonVotedPlayersCount > maxVotes {
-            mostVotedPlayer = players.last!.to
-        }
-
-        dayModel.nonVotedPlayersCount = nonVotedPlayersCount
-        dayModel.kickedPlayers.append(mostVotedPlayer)
+        dayModel.kickedPlayers.append(sorted.first!.to)
         model.kickedPlayers.insert(contentsOf: dayModel.kickedPlayers, at: 0)
         onComplete()
     }

@@ -88,7 +88,7 @@ class DayVC: UIViewController {
     }
     
     @objc private func didTapListButton() {
-        let vc = DayVoteStatisticVC(dayModel: dayModel) { [weak self] () in
+        let vc = DayVoteStatisticVC(model: model, dayModel: dayModel) { [weak self] () in
             guard let self else { return }
         }
         navigationController?.pushViewController(vc, animated: true)

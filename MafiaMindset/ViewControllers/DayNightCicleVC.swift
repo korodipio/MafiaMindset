@@ -21,7 +21,7 @@ class DayNightCicleVC: UIViewController {
     private let titleLabel = UILabel()
     private let stateLabel = LTMorphingLabel()
     private var buttonVC: ButtonVC!
-
+    
     init(storageViewModel: StorageSessionViewModel, model: SessionModel) {
         self.state = model.dayNightCycleType
         self.model = model
@@ -38,10 +38,14 @@ class DayNightCicleVC: UIViewController {
         setupUi()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.delegate = self
+    }
+    
     private func setupUi() {
         title = "Цикл"
         view.backgroundColor = .secondarySystemBackground
-        navigationController?.delegate = self
         
         titleLabel.text = "На очереди"
         titleLabel.textAlignment = .center
@@ -72,7 +76,7 @@ class DayNightCicleVC: UIViewController {
         storageViewModel.saveSession(model)
         didChangeState()
     }
-    
+
     private func addConfigurationButtonItem(to navItem: UINavigationItem) {
         let rightButton = UIBarButtonItem(image: .init(systemName: "slider.vertical.3"), style: .done, target: self, action: #selector(didTapConfigureButton))
         rightButton.tintColor = .black
@@ -157,5 +161,16 @@ extension DayNightCicleVC: UINavigationControllerDelegate {
             vc is ConfigureSessionVC
         }) else { return }
         addConfigurationButtonItem(to: viewController.navigationItem)
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch operation {
+        case .push:
+            return TransitionManager(direction: .present)
+        case .pop:
+            return TransitionManager(direction: .dismiss)
+        default:
+            return nil
+        }
     }
 }

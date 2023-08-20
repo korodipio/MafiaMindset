@@ -24,6 +24,7 @@ class RootVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.delegate = self
         loadSessions(reload: true)
         UIApplication.shared.isIdleTimerDisabled = false
     }
@@ -111,20 +112,20 @@ class RootVC: UIViewController {
     }
     
     @objc private func didTapCreateSessionButton() {
-//        let model = SessionModel()
-//        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
-//        model.deadPlayers = [0, 6]
-//        model.mafCount = 1
-//        model.bossCount = 1
-//        model.civCount = 2
-//        model.wolfCount = 1
-//        model.bloodhoundCount = 1
-//        model.maniacCount = 1
-//        model.medicCount = 1
-//        model.commissarCount = 1
-//        model.patrolCount = 1
-//        model.dayNightCycleType = .day
-//
+        let model = SessionModel()
+        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
+        model.deadPlayers = [4, 6]
+        model.mafCount = 1
+        model.bossCount = 1
+        model.civCount = 2
+        model.wolfCount = 1
+        model.bloodhoundCount = 1
+        model.maniacCount = 1
+        model.medicCount = 1
+        model.commissarCount = 1
+        model.patrolCount = 1
+        model.dayNightCycleType = .night
+
 //        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
 
         let vc = CreateSessionVC { [weak self] model in
@@ -217,3 +218,19 @@ extension RootVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension RootVC: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        
+    }
+    
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        switch operation {
+        case .push:
+            return TransitionManager(direction: .present)
+        case .pop:
+            return TransitionManager(direction: .dismiss)
+        default:
+            return nil
+        }
+    }    
+}

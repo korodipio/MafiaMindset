@@ -10,13 +10,18 @@ import UIKit
 class DayVoteStatisticVC: UIViewController {
 
     private let onComplete: () -> Void
-    private var label: UILabel?
+    private let model: SessionModel
     private let dayModel: DayModel
     private let tableView = UITableView()
     private var buttonVC: ButtonVC!
     
-    init(dayModel: DayModel, onComplete: @escaping () -> Void) {
+    private var lastNightLoverSelection: Int? {
+        return model.isAlive(role: .lover) ? model.nights.last?.lover : nil
+    }
+    
+    init(model: SessionModel, dayModel: DayModel, onComplete: @escaping () -> Void) {
         self.onComplete = onComplete
+        self.model = model
         self.dayModel = dayModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -34,17 +39,6 @@ class DayVoteStatisticVC: UIViewController {
         title = "Статистика дня"
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
-        
-        let label = UILabel()
-        view.addSubview(label)
-        label.constraintToParent()
-        label.font = .rounded(ofSize: 12, weight: .medium)
-        label.textAlignment = .center
-        label.textColor = .label.withAlphaComponent(0.5)
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
-        label.text = "Тут будет статистика когда кто то будет выдвинут"
-        self.label = label
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -70,6 +64,13 @@ class DayVoteStatisticVC: UIViewController {
         onComplete()
         navigationController?.popViewController(animated: true)
     }
+    
+    private func availableVotesCount() -> Int {
+        let alivePlayersCount = model.alivePlayersCount - (lastNightLoverSelection != nil ? 1 : 0)
+        let votedPlayersCount = dayModel.votedPlayerCount
+        let nonVotedPlayersCount = alivePlayersCount - votedPlayersCount
+        return max(0, nonVotedPlayersCount)
+    }
 }
 
 extension DayVoteStatisticVC: UITableViewDelegate, UITableViewDataSource {
@@ -83,11 +84,7 @@ extension DayVoteStatisticVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         let count = dayModel.votedPlayers.count
-        if count > 0 {
-            label?.removeFromSuperview()
-            label = nil
-        }
-        return count
+        return count + 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,9 +94,14 @@ extension DayVoteStatisticVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.identifier, for: indexPath) as! LabelTableViewCell
         
-        let votedPlayer = dayModel.votedPlayers[indexPath.section]
-        cell.title = "Выдвинут: \(votedPlayer.to + 1) Игроком: \(votedPlayer.by + 1) Голосов: \(votedPlayer.voteCount)"
-
+        if indexPath.section == tableView.numberOfSections - 1 {
+            cell.title = "Не проголосовало: \(availableVotesCount())"
+        }
+        else {
+            let votedPlayer = dayModel.votedPlayers[indexPath.section]
+            cell.title = "Выдвинут: \(votedPlayer.to + 1) Игроком: \(votedPlayer.by + 1) Голосов: \(votedPlayer.voteCount)"
+        }
+        
         return cell
     }
     

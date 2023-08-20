@@ -67,12 +67,10 @@ class DayResultVC: UIViewController {
             output.append("Никто не исключен")
             return
         }
-        dayModel.votedPlayers.sorted(by: { v1, v2 in
-            v1.to < v2.to
-        }).forEach { v1 in
+        dayModel.votedPlayers.forEach { v1 in
             output.append("За исключение \(v1.to + 1): \(v1.voteCount)")
         }
-        output.append("Воздержалось: \(dayModel.nonVotedPlayersCount)")
+        output.append("Воздержались и отправились\nв последнего: \(dayModel.nonVotedPlayersCount)")
     }
     
     @objc private func didTapDoneButton() {

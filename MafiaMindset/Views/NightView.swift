@@ -49,6 +49,11 @@ class NightView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print(#function)
+    }
+    
     private func setupUi() {
         titleLabel.text = "Просыпается"
         titleLabel.textAlignment = .center
@@ -82,6 +87,7 @@ class NightView: UIView {
             playersLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15),
         ])
         layoutMargins = .zero
+        
         buttonVC = .init(didTap: { [weak self] () in
             self?.didTapDoneButton()
         })
