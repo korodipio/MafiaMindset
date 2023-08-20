@@ -23,6 +23,7 @@ class LabelTableViewCell: UITableViewCell {
     private var isSetupUi = false
     private let stackView = UIStackView()
     private let titleLabel = UILabel()
+    private let overlayView = UIView()
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -42,10 +43,10 @@ class LabelTableViewCell: UITableViewCell {
         clipsToBounds = false
         contentView.layer.cornerRadius = 12
         contentView.clipsToBounds = true
-        contentView.backgroundColor = .systemBackground
+        contentView.backgroundColor = .tertiarySystemBackground
         backgroundColor = .clear
-        layer.shadowOffset = .init(width: 0, height: 1)
-        layer.shadowRadius = 8
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 4
         
         contentView.addSubview(stackView)
         stackView.isLayoutMarginsRelativeArrangement = true
@@ -53,17 +54,21 @@ class LabelTableViewCell: UITableViewCell {
         stackView.constraintToParent()
         stackView.spacing = 15
         stackView.axis = .horizontal
-        stackView.backgroundColor = .systemBackground
+        stackView.backgroundColor = .tertiarySystemBackground
         stackView.addArrangedSubview(titleLabel)
         stackView.backgroundColor = .clear
         titleLabel.font = .rounded(ofSize: 16, weight: .regular)
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         
+        contentView.addSubview(overlayView)
+        overlayView.constraintToParent()
+        overlayView.backgroundColor = .systemGray6.withAlphaComponent(0.5)
+        
         didChangeIsActive()
     }
     
     private func didChangeIsActive() {
-        contentView.backgroundColor = isActive ? .systemBackground : .lightGray.withAlphaComponent(0.2)
+        overlayView.alpha = isActive ? 0 : 1
     }
 }

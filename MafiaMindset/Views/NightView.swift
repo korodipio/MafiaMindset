@@ -170,7 +170,7 @@ class NightView: UIView {
     
     private func showAlert(title: String?, message: String? = nil, completed: (() -> Void)? = nil) {
         let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        vc.view.tintColor = .black
+        vc.view.tintColor = .label
         
         let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
             completed?()
@@ -184,7 +184,7 @@ class NightView: UIView {
         let rolePlayers = rolesToWake[rolesToWakeIndex]
         let role = rolePlayers.role
         let vc = UIAlertController(title: role.title, message: "Выбери игрока", preferredStyle: .alert)
-        vc.view.tintColor = .black
+        vc.view.tintColor = .label
         
         switch role {
         case .maf:

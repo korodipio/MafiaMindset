@@ -70,20 +70,17 @@ class RoleTableViewCell: UITableViewCell {
         contentView.clipsToBounds = true
         contentView.backgroundColor = .clear
         backgroundColor = .clear
-        layer.shadowColor = UIColor.cyan.cgColor
-        layer.shadowOffset = .init(width: 0, height: 1)
-        layer.shadowRadius = 8
-        
-//        preservesSuperviewLayoutMargins = true
-//        contentView.preservesSuperviewLayoutMargins = true
-        
+        layer.shadowColor = UIColor.primary?.cgColor
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 4
+
         contentView.addSubview(stackView)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = .init(top: 10, left: 15, bottom: 10, right: 15)
         stackView.constraintToParent()
         stackView.spacing = 15
         stackView.axis = .horizontal
-        stackView.backgroundColor = .systemBackground
+        stackView.backgroundColor = .tertiarySystemBackground
         
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(contentBox)

@@ -85,7 +85,7 @@ class RootVC: UIViewController {
         self.label = label
         
         let navBarAppearance = UINavigationBarAppearance()
-        let attributes: [NSAttributedString.Key : Any] = [.font: UIFont.rounded(ofSize: 16, weight: .medium),]
+        let attributes: [NSAttributedString.Key : Any] = [.font: UIFont.rounded(ofSize: 16, weight: .medium)]
         navBarAppearance.largeTitleTextAttributes = [.font: UIFont.rounded(ofSize: 24, weight: .bold)]
         navBarAppearance.titleTextAttributes =  attributes
         navBarAppearance.buttonAppearance.normal.titleTextAttributes = attributes
@@ -94,10 +94,10 @@ class RootVC: UIViewController {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .label
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "plus"), style: .done, target: self, action: #selector(didTapCreateSessionButton))
-        
+
         tableView.dataSource = self
         tableView.delegate = self
         tableView.sectionHeaderTopPadding = 0
@@ -114,7 +114,7 @@ class RootVC: UIViewController {
     @objc private func didTapCreateSessionButton() {
         let model = SessionModel()
         model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
-        model.deadPlayers = [4, 6]
+        model.deadPlayers = [4, 6, 0]
         model.mafCount = 1
         model.bossCount = 1
         model.civCount = 2
@@ -124,7 +124,7 @@ class RootVC: UIViewController {
         model.medicCount = 1
         model.commissarCount = 1
         model.patrolCount = 1
-        model.dayNightCycleType = .night
+        model.dayNightCycleType = .day
 
 //        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
 

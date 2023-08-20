@@ -69,7 +69,7 @@ class CardAssignmentVC: UIViewController {
         add(buttonVC)
         buttonVC.buttonTitle = "Задать роль"
 
-        prepare(forPlayerWith: currentPlayerIndex)
+        currentPlayerIndex = Int.random(in: 0..<model.totalCount)
     }
     
     private func prepare(forPlayerWith index: Int) {
@@ -117,7 +117,7 @@ class CardAssignmentVC: UIViewController {
     
     private func showConfirmation(player: Int, role: SessionRoleId, _ confirmed: @escaping () -> Void) {
         let vc = UIAlertController(title: "Игрок \(player + 1) - \(role.title)", message: "Подтверди свой выбор", preferredStyle: .alert)
-        vc.view.tintColor = .black
+        vc.view.tintColor = .label
         
         let roleAction = UIAlertAction(title: "Подтверждаю", style: .default) { _ in
             confirmed()
@@ -132,7 +132,7 @@ class CardAssignmentVC: UIViewController {
     
     @objc private func didTapAssignButton() {
         let vc = UIAlertController(title: "Выбери нужную роль", message: nil, preferredStyle: .alert)
-        vc.view.tintColor = .black
+        vc.view.tintColor = .label
         
         availableRoles().sorted { v1, v2 in
             v1.key.title < v2.key.title
@@ -191,7 +191,7 @@ class CardAssignmentVC: UIViewController {
             finishAssignment()
         }
         else {
-            currentPlayerIndex += 1
+            currentPlayerIndex = (currentPlayerIndex + 1) % model.totalCount
         }
     }
     

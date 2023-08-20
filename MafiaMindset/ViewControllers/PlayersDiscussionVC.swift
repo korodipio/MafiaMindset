@@ -89,7 +89,7 @@ class PlayersDiscussionVC: UIViewController {
 
     private func handle(complete: @escaping () -> Void) {
         let vc = UIAlertController(title: "Выдвижение", message: "Выбери игрока", preferredStyle: .alert)
-        vc.view.tintColor = .black
+        vc.view.tintColor = .label
         
         let players = kickablePlayers().sorted()
         guard !players.isEmpty else { complete(); return }

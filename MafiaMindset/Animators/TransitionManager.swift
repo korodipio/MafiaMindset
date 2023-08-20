@@ -17,7 +17,8 @@ class TransitionManager: NSObject {
         var animationDimmingViewAlpha: CGFloat { return self == .present ? 0.4 : 0 }
     }
     var animationDirection: AnimationDirection = .present
-    private(set) var animationDuration: TimeInterval = 0.5
+    private(set) var animationDuration: TimeInterval = 0.6
+    private let vibro = UIImpactFeedbackGenerator(style: .soft)
     
     convenience init(direction: AnimationDirection) {
         self.init()
@@ -67,6 +68,8 @@ extension TransitionManager: UIViewControllerAnimatedTransitioning {
         
         switch animationDirection {
         case .present:
+            vibro.prepare()
+            
             let toVC = ctx.viewController(forKey: .to)!
             let toView = ctx.view(forKey: .to)!
             
@@ -80,10 +83,16 @@ extension TransitionManager: UIViewControllerAnimatedTransitioning {
             toView.transform = .init(translationX: 0, y: toView.bounds.height / 2).scaledBy(x: 0.8, y: 0.8)
             toView.alpha = 0
             toView.layer.cornerRadius = 64
-            toView.clipsToBounds = true
-            toView.layoutIfNeeded()
             
-            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseInOut) {
+            toView.layer.shadowColor = UIColor.black.cgColor
+            toView.layer.shadowOffset = .init(width: 0, height: -2)
+            toView.layer.shadowOpacity = 0.3
+
+            toView.layoutIfNeeded()
+        
+            vibro.impactOccurred()
+            
+            UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0) {
                 toVC.navigationController?.navigationBar.prefersLargeTitles = true
                 toView.transform = .identity
                 toView.alpha = 1
@@ -92,7 +101,7 @@ extension TransitionManager: UIViewControllerAnimatedTransitioning {
                 self.animationDimmingView.alpha = self.animationDirection.animationDimmingViewAlpha
             } completion: { _ in
                 toView.layer.cornerRadius = 0
-                toView.clipsToBounds = false
+                toView.layer.shadowOpacity = 0
                 self.animationDimmingView.removeFromSuperview()
                 self.animationBlurView.removeFromSuperview()
                 ctx.completeTransition(!ctx.transitionWasCancelled)
@@ -110,19 +119,21 @@ extension TransitionManager: UIViewControllerAnimatedTransitioning {
             animationDimmingView.alpha = animationDirection.next.animationDimmingViewAlpha
             animationBlurView.alpha = animationDirection.next.animationBlurViewAlpha
             
+            fromView.layer.shadowColor = UIColor.black.cgColor
+            fromView.layer.shadowOffset = .init(width: 0, height: -2)
+            fromView.layer.shadowOpacity = 0.3
             fromView.alpha = 1
-            fromView.clipsToBounds = true
             fromView.layer.cornerRadius = UIScreen.main.displayCornerRadius
             
-            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0) {
                 fromView.transform = .init(translationX: 0, y: fromView.bounds.height / 2).scaledBy(x: 0.8, y: 0.8)
                 fromView.layer.cornerRadius = 64
                 fromView.alpha = 0
                 self.animationBlurView.alpha = self.animationDirection.animationBlurViewAlpha
                 self.animationDimmingView.alpha = self.animationDirection.animationDimmingViewAlpha
             } completion: { _ in
-                fromView.clipsToBounds = false
                 fromView.layer.cornerRadius = 0
+                fromView.layer.shadowOpacity = 0
                 self.animationDimmingView.removeFromSuperview()
                 self.animationBlurView.removeFromSuperview()
                 ctx.completeTransition(!ctx.transitionWasCancelled)

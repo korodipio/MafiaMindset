@@ -9,7 +9,6 @@ import UIKit
 
 class DayVoteStatisticVC: UIViewController {
 
-    private let onComplete: () -> Void
     private let model: SessionModel
     private let dayModel: DayModel
     private let tableView = UITableView()
@@ -19,8 +18,7 @@ class DayVoteStatisticVC: UIViewController {
         return model.isAlive(role: .lover) ? model.nights.last?.lover : nil
     }
     
-    init(model: SessionModel, dayModel: DayModel, onComplete: @escaping () -> Void) {
-        self.onComplete = onComplete
+    init(model: SessionModel, dayModel: DayModel) {
         self.model = model
         self.dayModel = dayModel
         super.init(nibName: nil, bundle: nil)
@@ -61,7 +59,6 @@ class DayVoteStatisticVC: UIViewController {
     }
 
     @objc private func didTapDoneButton() {
-        onComplete()
         navigationController?.popViewController(animated: true)
     }
     

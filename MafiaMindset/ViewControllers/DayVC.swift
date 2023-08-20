@@ -62,7 +62,7 @@ class DayVC: UIViewController {
         view.addSubview(stateLabel)
 
         listBarButtonItem = UIBarButtonItem(image: .init(systemName: "list.clipboard"), style: .done, target: self, action: #selector(didTapListButton))
-        listBarButtonItem.tintColor = .black
+        listBarButtonItem.tintColor = .label
         navigationItem.leftBarButtonItem = listBarButtonItem
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -88,9 +88,7 @@ class DayVC: UIViewController {
     }
     
     @objc private func didTapListButton() {
-        let vc = DayVoteStatisticVC(model: model, dayModel: dayModel) { [weak self] () in
-            guard let self else { return }
-        }
+        let vc = DayVoteStatisticVC(model: model, dayModel: dayModel)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -113,7 +111,7 @@ class DayVC: UIViewController {
         case .playerDiscussion:
             let vc = PlayersDiscussionVC(model: model, dayModel: dayModel, onComplete: { [weak self] () in
                 guard let self else { return }
-                if self.dayModel.votedPlayers.isEmpty {
+                if self.dayModel.votedPlayers.count <= 1 {
                     self.state = .complete
                     return
                 }
@@ -133,8 +131,13 @@ class DayVC: UIViewController {
         case .voting:
             let vc = DayVoteVC(model: model, dayModel: dayModel) { [weak self] () in
                 guard let self else { return }
-                self.state = .lastDiscussion
-                self.navigationController?.popToViewController(self, animated: true)
+                if self.dayModel.kickedPlayers.isEmpty {
+                    self.state = .complete
+                }
+                else {
+                    self.state = .lastDiscussion
+                    self.navigationController?.popToViewController(self, animated: true)
+                }
             }
             pushViewController(vc)
             

@@ -79,7 +79,7 @@ class DayVoteVC: UIViewController {
         
         if let lastNightLoverSelection {
             let vc = UIAlertController(title: "Игрок \(lastNightLoverSelection + 1) не голосует", message: nil, preferredStyle: .alert)
-            vc.view.tintColor = .black
+            vc.view.tintColor = .label
             vc.addAction(.init(title: "Ok", style: .cancel))
             present(vc, animated: true)
         }
@@ -93,7 +93,7 @@ class DayVoteVC: UIViewController {
     
     private func handle(complete: @escaping () -> Void) {
         let vc = UIAlertController(title: "Исключение", message: nil, preferredStyle: .alert)
-        vc.view.tintColor = .black
+        vc.view.tintColor = .label
         
         var tf: UITextField!
         vc.addTextField { textField in
@@ -138,7 +138,7 @@ class DayVoteVC: UIViewController {
             }
             if mostVotedPlayers.count >= 2 {
                 let vc = UIAlertController(title: "Что делать будем дальше?", message: nil, preferredStyle: .alert)
-                vc.view.tintColor = .black
+                vc.view.tintColor = .label
                 
                 let continueAction = UIAlertAction(title: "Переголосование", style: .default) { _ in
                     self.dayModel.votedPlayers = mostVotedPlayers
@@ -150,7 +150,7 @@ class DayVoteVC: UIViewController {
                     vc.revoting = true
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
-                let cancelAction = UIAlertAction(title: "Никого не исключать и продолжить", style: .cancel) { _ in
+                let cancelAction = UIAlertAction(title: "Продолжить никого не исключая", style: .cancel) { _ in
                     self.onComplete()
                 }
                 vc.addAction(continueAction)

@@ -136,7 +136,7 @@ extension ConfigureSessionVC: UITableViewDelegate, UITableViewDataSource {
         cell.isActive = player.isAlive
         
         cell.layer.shadowOpacity = 0.3
-        cell.layer.shadowColor = player.isAlive ? UIColor.primary?.cgColor : UIColor.red.cgColor
+        cell.layer.shadowColor = player.isAlive ? UIColor.primary?.cgColor : UIColor.clear.cgColor
         
         return cell
     }

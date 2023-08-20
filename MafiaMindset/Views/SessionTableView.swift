@@ -47,7 +47,7 @@ class SessionTableView: UIView {
         
         addSubview(imageView)
         imageView.image = .init(systemName: "trophy")
-        imageView.tintColor = .black
+        imageView.tintColor = .label
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

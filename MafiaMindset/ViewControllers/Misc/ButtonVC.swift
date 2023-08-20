@@ -21,6 +21,11 @@ class ButtonVC: UIViewController {
         get { button.title(for: .normal) }
         set { button.setTitle(newValue, for: .normal) }
     }
+    var isGradientEnabled = true {
+        didSet {
+            didChangeIsGradientEnabled()
+        }
+    }
     private let gradientHeight: CGFloat = 75
     private let gradientLayer = CAGradientLayer()
     private let button = UIButton()
@@ -56,12 +61,17 @@ class ButtonVC: UIViewController {
         gradientLayer.frame = .init(origin: .init(x: 0, y: view.bounds.height - gradientHeight), size: .init(width: view.bounds.width, height: gradientHeight))
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        gradientLayer.colors = [UIColor.secondarySystemBackground.cgColor, UIColor.secondarySystemBackground.withAlphaComponent(0).cgColor]
+    }
+    
     private func setupUi() {
         gradientLayer.colors = [UIColor.secondarySystemBackground.cgColor, UIColor.secondarySystemBackground.withAlphaComponent(0).cgColor]
         gradientLayer.startPoint = .init(x: 0, y: 1)
         gradientLayer.endPoint = .init(x: 0, y: 0)
         gradientLayer.locations = [0, 1]
-        view.layer.addSublayer(gradientLayer)
+        didChangeIsGradientEnabled()
         
         button.titleLabel!.font = .rounded(ofSize: 16, weight: .medium)
         button.layer.cornerRadius = 12
@@ -82,6 +92,19 @@ class ButtonVC: UIViewController {
         let gesture = UILongPressGestureRecognizer(target: self, action: #selector(gestureHandler))
         gesture.minimumPressDuration = 0
         button.addGestureRecognizer(gesture)
+    }
+    
+    private func didChangeIsGradientEnabled() {
+        if isGradientEnabled {
+            if gradientLayer.superlayer == nil {
+                view.layer.addSublayer(gradientLayer)
+            }
+        }
+        else {
+            if gradientLayer.superlayer != nil {
+                gradientLayer.removeFromSuperlayer()
+            }
+        }
     }
     
     @objc private func gestureHandler(gesture: UILongPressGestureRecognizer) {

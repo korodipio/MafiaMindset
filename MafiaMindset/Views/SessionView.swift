@@ -46,14 +46,12 @@ class SessionView: UIView {
     
     private func setupUi() {
         backgroundColor = .clear
-        clipsToBounds =  true
-        layer.cornerRadius = 12
-//        layer.borderColor = UIColor.primary?.cgColor
-//        layer.borderWidth = 1
-        
+
         addSubview(vStack)
-        vStack.backgroundColor = .systemBackground
         vStack.constraintToParent()
+        vStack.clipsToBounds =  true
+        vStack.layer.cornerRadius = 12
+        vStack.backgroundColor = .tertiarySystemBackground
         vStack.axis = .vertical
         vStack.isLayoutMarginsRelativeArrangement = true
         vStack.layoutMargins = .init(top: 15, left: 15, bottom: 15, right: 15)
@@ -68,7 +66,7 @@ class SessionView: UIView {
         
         winnerImageView.contentMode = .scaleAspectFit
         winnerImageView.image = .init(systemName: "trophy")
-        winnerImageView.tintColor = .black
+        winnerImageView.tintColor = .label
         hStack.addArrangedSubview(winnerImageView)
 
         vStack.addArrangedSubview(stack)
@@ -79,6 +77,7 @@ class SessionView: UIView {
             self?.didTapContinueSessionButton()
         })
         addSubview(buttonVC.view)
+        buttonVC.isGradientEnabled = false
         buttonVC.view.constraintToParent()
         buttonVC.buttonTitle = "Продолжить игру"
         

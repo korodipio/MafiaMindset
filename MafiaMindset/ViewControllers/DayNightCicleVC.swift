@@ -79,7 +79,7 @@ class DayNightCicleVC: UIViewController {
 
     private func addConfigurationButtonItem(to navItem: UINavigationItem) {
         let rightButton = UIBarButtonItem(image: .init(systemName: "slider.vertical.3"), style: .done, target: self, action: #selector(didTapConfigureButton))
-        rightButton.tintColor = .black
+        rightButton.tintColor = .label
         navItem.rightBarButtonItem = rightButton
     }
     

@@ -50,7 +50,7 @@ class GlobalDiscussionVC: UIViewController {
         
         if let lastNightLoverSelection {
             let vc = UIAlertController(title: "Игрок \(lastNightLoverSelection + 1) не учавствует и не голосует из-за любовницы", message: nil, preferredStyle: .alert)
-            vc.view.tintColor = .black
+            vc.view.tintColor = .label
             vc.addAction(.init(title: "Ok", style: .cancel))
             present(vc, animated: true)
         }

@@ -85,8 +85,8 @@ extension SessionTransitionManager: UIViewControllerAnimatedTransitioning {
             let placeholderView = createPlaceholder(from: fromCell.sessionView)
             self.placeholderView = placeholderView
 
-            animationAddDimmingView(to: containerView)
             animationAddBlurView(to: containerView)
+            animationAddDimmingView(to: containerView)
             containerView.addSubview(toView)
             toView.frame = ctx.finalFrame(for: toVC)
             toView.alpha = 0
@@ -99,7 +99,7 @@ extension SessionTransitionManager: UIViewControllerAnimatedTransitioning {
             placeholderView.layoutIfNeeded()
             
             let finalFrameForGoalView = toVC.sessionView.convert(toVC.sessionView.bounds, to: nil)
-
+            
             UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0) {
 
                 placeholderView.type = toVC.sessionView.type
@@ -113,11 +113,10 @@ extension SessionTransitionManager: UIViewControllerAnimatedTransitioning {
                 toView.transform = .identity
                 
             } completion: { _ in
-
                 toVC.sessionView.setNeedsLayout()
                 toVC.sessionView.isHidden = false
                 placeholderView.isHidden = true
-                ctx.completeTransition(true)
+                ctx.completeTransition(!ctx.transitionWasCancelled)
 
             }
 
@@ -154,7 +153,7 @@ extension SessionTransitionManager: UIViewControllerAnimatedTransitioning {
                 self.placeholderView = nil
                 self.animationDimmingView.removeFromSuperview()
                 self.animationBlurView.removeFromSuperview()
-                ctx.completeTransition(true)
+                ctx.completeTransition(!ctx.transitionWasCancelled)
             }
         }
     }
