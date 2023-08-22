@@ -90,7 +90,7 @@ class RoleTableViewCell: UITableViewCell {
         helpButton.isHidden = helpDescription == nil
         helpButton.addTarget(self, action: #selector(didTapHelpButton), for: .touchUpInside)
         
-        titleLabel.font = .rounded(ofSize: 16, weight: .regular)
+        titleLabel.font = .rounded(ofSize: 16, weight: .medium)
     }
     
     @objc private func didTapHelpButton() {

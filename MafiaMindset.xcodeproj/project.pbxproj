@@ -40,6 +40,7 @@
 		9788846F2A8A327500953C4A /* DayResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9788846E2A8A327500953C4A /* DayResultVC.swift */; };
 		978884722A8A379700953C4A /* ButtonVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978884712A8A379700953C4A /* ButtonVC.swift */; };
 		978884742A8A37A300953C4A /* TouchTransparentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978884732A8A37A300953C4A /* TouchTransparentVC.swift */; };
+		979BFD692A95230C004F3613 /* app-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 979BFD682A95230C004F3613 /* app-icon.png */; };
 		97E563982A8CF84B000281F4 /* SessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E563972A8CF84B000281F4 /* SessionViewModel.swift */; };
 		97E5639A2A8E092D000281F4 /* StorageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E563992A8E092D000281F4 /* StorageModels.swift */; };
 		97E5639C2A8E0A93000281F4 /* StorageSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E5639B2A8E0A93000281F4 /* StorageSessionViewModel.swift */; };
@@ -97,6 +98,7 @@
 		9788846E2A8A327500953C4A /* DayResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayResultVC.swift; sourceTree = "<group>"; };
 		978884712A8A379700953C4A /* ButtonVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonVC.swift; sourceTree = "<group>"; };
 		978884732A8A37A300953C4A /* TouchTransparentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchTransparentVC.swift; sourceTree = "<group>"; };
+		979BFD682A95230C004F3613 /* app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "app-icon.png"; sourceTree = "<group>"; };
 		97E563972A8CF84B000281F4 /* SessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionViewModel.swift; sourceTree = "<group>"; };
 		97E563992A8E092D000281F4 /* StorageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageModels.swift; sourceTree = "<group>"; };
 		97E5639B2A8E0A93000281F4 /* StorageSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageSessionViewModel.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 		97E563A12A8E2571000281F4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				979BFD682A95230C004F3613 /* app-icon.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				97E5FCD22A84132100E8BB0C /* LaunchScreen.storyboard in Resources */,
 				9703997E2A8BB07300E51F78 /* lottie_win.json in Resources */,
 				97E5FCCF2A84132100E8BB0C /* Assets.xcassets in Resources */,
+				979BFD692A95230C004F3613 /* app-icon.png in Resources */,
 				97E5FCCD2A84131F00E8BB0C /* RootVC.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -656,7 +660,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -693,7 +697,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

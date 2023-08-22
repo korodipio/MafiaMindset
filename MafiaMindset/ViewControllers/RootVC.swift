@@ -13,10 +13,10 @@ class RootVC: UIViewController {
     private var label: UILabel?
     private let storageViewModel = StorageSessionViewModel()
     private let tableView = UITableView()
+    private var isPresented = false
     private var selectedCellIndex: IndexPath?
     private var models: [SessionModel] = []
-    let v = TimerView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUi()
@@ -34,6 +34,11 @@ class RootVC: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isPresented = true
+    }
+    
     private func loadSessions(reload: Bool) {
         models = storageViewModel.loadSessions().sorted(by: { v1, v2 in
             v1.unixDateCreated > v2.unixDateCreated
@@ -42,6 +47,7 @@ class RootVC: UIViewController {
             tableView.reloadData()
         }
         if !models.isEmpty {
+            tableView.isHidden = false
             label?.removeFromSuperview()
             label = nil
         }
@@ -81,7 +87,9 @@ class RootVC: UIViewController {
         label.textColor = .label.withAlphaComponent(0.5)
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
-        label.text = "Тут будут твои игры"
+        label.text = "Тут пока нет игр, но скоро точно будут\nНажми сюда либо на плюсик в углу чтобы начать"
+        label.isUserInteractionEnabled = true
+        label.addTapGesture(target: self, action: #selector(didTapCreateSessionButton))
         self.label = label
         
         let navBarAppearance = UINavigationBarAppearance()
@@ -103,6 +111,7 @@ class RootVC: UIViewController {
         tableView.sectionHeaderTopPadding = 0
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
+        tableView.isHidden = true
         view.addSubview(tableView)
         tableView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         tableView.constraintToParent()
@@ -112,19 +121,19 @@ class RootVC: UIViewController {
     }
     
     @objc private func didTapCreateSessionButton() {
-        let model = SessionModel()
-        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
-        model.deadPlayers = [4, 6, 0]
-        model.mafCount = 1
-        model.bossCount = 1
-        model.civCount = 2
-        model.wolfCount = 1
-        model.bloodhoundCount = 1
-        model.maniacCount = 1
-        model.medicCount = 1
-        model.commissarCount = 1
-        model.patrolCount = 1
-        model.dayNightCycleType = .day
+//        let model = SessionModel()
+//        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
+//        model.deadPlayers = [4, 6, 0]
+//        model.mafCount = 1
+//        model.bossCount = 1
+//        model.civCount = 2
+//        model.wolfCount = 1
+//        model.bloodhoundCount = 1
+//        model.maniacCount = 1
+//        model.medicCount = 1
+//        model.commissarCount = 1
+//        model.patrolCount = 1
+//        model.dayNightCycleType = .day
 
 //        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
 
@@ -180,6 +189,16 @@ extension RootVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SessionTableViewCell.identifier, for: indexPath) as! SessionTableViewCell
+        
+        if !isPresented {
+            cell.alpha = 0
+            cell.transform = .init(translationX: 0, y: 20)
+            let duration = 0.25
+            UIView.animate(withDuration: duration, delay: duration * Double(indexPath.section) * 0.2, options: .curveEaseInOut) {
+                cell.alpha = 1
+                cell.transform = .identity
+            }
+        }
         
         let model = models[indexPath.section]
         cell.model = model

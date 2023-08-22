@@ -12,7 +12,8 @@ class CreateSessionVC: UIViewController {
     private let onComplete: (SessionModel) -> Void
     private var model = SessionModel()
     private let tableView = UITableView()
-    
+    private var isPresented = false
+
     private var cells: [RoleTableViewCell] = []
     private var buttonVC: ButtonVC!
     
@@ -28,6 +29,11 @@ class CreateSessionVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUi()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isPresented = true
     }
     
     private func setupUi() {
@@ -201,6 +207,18 @@ extension CreateSessionVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        cells[indexPath.section]
+        let cell = cells[indexPath.section]
+        
+        if !isPresented {
+            cell.alpha = 0
+            cell.transform = .init(translationX: 0, y: 20)
+            let duration = 0.25
+            UIView.animate(withDuration: duration, delay: duration * Double(indexPath.section) * 0.2, options: .curveEaseInOut) {
+                cell.alpha = 1
+                cell.transform = .identity
+            }
+        }
+        
+        return cell
     }
 }

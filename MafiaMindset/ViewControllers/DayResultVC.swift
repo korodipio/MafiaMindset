@@ -12,6 +12,7 @@ class DayResultVC: UIViewController {
     private let onComplete: () -> Void
     private let dayModel: DayModel
     private let tableView = UITableView()
+    private var isPresented = false
     private var output: [String] = []
     private var buttonVC: ButtonVC!
     
@@ -28,6 +29,11 @@ class DayResultVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUi()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        isPresented = true
     }
 
     private func setupUi() {
@@ -97,6 +103,16 @@ extension DayResultVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.identifier, for: indexPath) as! LabelTableViewCell
+        
+        if !isPresented {
+            cell.alpha = 0
+            cell.transform = .init(translationX: 0, y: 20)
+            let duration = 0.25
+            UIView.animate(withDuration: duration, delay: duration * Double(indexPath.section) * 0.2, options: .curveEaseInOut) {
+                cell.alpha = 1
+                cell.transform = .identity
+            }
+        }
         
         cell.title = output[indexPath.section]
         
