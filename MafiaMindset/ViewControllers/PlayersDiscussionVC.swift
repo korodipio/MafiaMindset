@@ -54,7 +54,7 @@ class PlayersDiscussionVC: UIViewController {
         
         view.addSubview(timerView)
         timerView.constraintToParent()
-        timerView.seconds = 60
+        timerView.seconds = GlobalSettings.shared.playerDiscussionSeconds
         
         buttonVC = .init(didTap: { [weak self] () in
             self?.didTapDoneButton()
@@ -71,7 +71,7 @@ class PlayersDiscussionVC: UIViewController {
             }
             
             self.currentPlayerIndex += 1
-            self.timerView.reset(seconds: 60)
+            self.timerView.reset(seconds: GlobalSettings.shared.playerDiscussionSeconds)
             self.title = "Выдвижение. Игрок \(self.players[self.currentPlayerIndex] + 1)"
         }
     }

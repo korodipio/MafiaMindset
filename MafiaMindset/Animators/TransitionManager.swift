@@ -68,7 +68,9 @@ extension TransitionManager: UIViewControllerAnimatedTransitioning {
         
         switch animationDirection {
         case .present:
-            vibro.prepare()
+            if !GlobalSettings.shared.disableVibration {
+                vibro.prepare()
+            }
             
             let toVC = ctx.viewController(forKey: .to)!
             let toView = ctx.view(forKey: .to)!
@@ -90,7 +92,9 @@ extension TransitionManager: UIViewControllerAnimatedTransitioning {
 
             toView.layoutIfNeeded()
         
-            vibro.impactOccurred()
+            if !GlobalSettings.shared.disableVibration {
+                vibro.impactOccurred()
+            }
             
             UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0) {
                 toVC.navigationController?.navigationBar.prefersLargeTitles = true

@@ -11,8 +11,8 @@ class DayVC: UIViewController {
 
     enum State {
         case globalDiscussion
-        case playerDiscussion
-        case votedPlayerDiscussion
+        case playersDiscussion
+        case votedPlayersDiscussion
         case voting
         case lastDiscussion
         case complete
@@ -84,7 +84,12 @@ class DayVC: UIViewController {
         buttonVC.buttonTitle = "Начать"
         add(buttonVC)
         
-        state = .globalDiscussion
+        switch GlobalSettings.shared.discussionOrder {
+        case .globalDiscussionThenPlayer:
+            state = .globalDiscussion
+        case .playersDiscussionThenGlobal:
+            state = .playersDiscussion
+        }
     }
     
     @objc private func didTapListButton() {
@@ -103,24 +108,48 @@ class DayVC: UIViewController {
         case .globalDiscussion:
             let vc = GlobalDiscussionVC(model: model, onComplete: { [weak self] () in
                 guard let self else { return }
-                self.state = .playerDiscussion
+                
+                switch GlobalSettings.shared.discussionOrder {
+                case .globalDiscussionThenPlayer:
+                    self.state = .playersDiscussion
+                case .playersDiscussionThenGlobal:
+                    if self.dayModel.votedPlayers.count <= 1 {
+                        self.state = .complete
+                        return
+                    }
+                    self.state = .votedPlayersDiscussion
+                }
+                
                 self.navigationController?.popToViewController(self, animated: true)
             })
             pushViewController(vc)
             
-        case .playerDiscussion:
+        case .playersDiscussion:
             let vc = PlayersDiscussionVC(model: model, dayModel: dayModel, onComplete: { [weak self] () in
                 guard let self else { return }
                 if self.dayModel.votedPlayers.count <= 1 {
-                    self.state = .complete
-                    return
+                    
+                    switch GlobalSettings.shared.discussionOrder {
+                    case .globalDiscussionThenPlayer:
+                        self.state = .complete
+                        return
+                    default:
+                        break
+                    }
                 }
-                self.state = .votedPlayerDiscussion
+                
+                switch GlobalSettings.shared.discussionOrder {
+                case .globalDiscussionThenPlayer:
+                    self.state = .votedPlayersDiscussion
+                case .playersDiscussionThenGlobal:
+                    self.state = .globalDiscussion
+                }
+
                 self.navigationController?.popToViewController(self, animated: true)
             })
             pushViewController(vc)
             
-        case .votedPlayerDiscussion:
+        case .votedPlayersDiscussion:
             let vc = VotedPlayersDiscussionVC(dayModel: dayModel) { [weak self] () in
                 guard let self else { return }
                 self.state = .voting
@@ -157,9 +186,9 @@ class DayVC: UIViewController {
         switch state {
         case .globalDiscussion:
             stateLabel.text = "Общая дискуссия"
-        case .playerDiscussion:
+        case .playersDiscussion:
             stateLabel.text = "Дискуссия"
-        case .votedPlayerDiscussion:
+        case .votedPlayersDiscussion:
             stateLabel.text = "Оправдание"
         case .voting:
             stateLabel.text = "Голосование"

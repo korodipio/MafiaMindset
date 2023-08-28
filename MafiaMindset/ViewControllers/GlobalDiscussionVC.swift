@@ -40,7 +40,7 @@ class GlobalDiscussionVC: UIViewController {
         
         view.addSubview(timerView)
         timerView.constraintToParent()
-        timerView.seconds = 60 * 3
+        timerView.seconds = GlobalSettings.shared.globalDiscussionSeconds
 
         buttonVC = .init(didTap: { [weak self] () in
             self?.didTapSkipButton()
@@ -51,7 +51,7 @@ class GlobalDiscussionVC: UIViewController {
         if let lastNightLoverSelection {
             let vc = UIAlertController(title: "Игрок \(lastNightLoverSelection + 1) не учавствует и не голосует из-за любовницы", message: nil, preferredStyle: .alert)
             vc.view.tintColor = .label
-            vc.addAction(.init(title: "Ok", style: .cancel))
+            vc.addAction(.init(title: "Ок", style: .cancel))
             present(vc, animated: true)
         }
     }

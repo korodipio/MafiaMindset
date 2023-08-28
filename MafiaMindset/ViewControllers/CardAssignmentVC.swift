@@ -22,7 +22,7 @@ class CardAssignmentVC: UIViewController {
     private let numberLabel = LTMorphingLabel()
     private var buttonVC: ButtonVC!
     
-    init(onComplete: @escaping (SessionModel) -> Void, model: SessionModel) {
+    init(model: SessionModel, onComplete: @escaping (SessionModel) -> Void) {
         self.onComplete = onComplete
         self.model = model
         self.selectedRolesModel = model.copy()

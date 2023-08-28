@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BoolRoleTableViewCell: RoleTableViewCell {
+class BoolTableViewCell: EditableTableViewCell {
 
     var isChecked = false {
         didSet {
@@ -19,10 +19,19 @@ class BoolRoleTableViewCell: RoleTableViewCell {
     private let contentImage = UIImageView()
     private var isSetupUi = false
     
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUi()
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+//    override func didMoveToSuperview() {
+//        super.didMoveToSuperview()
+//        setupUi()
+//    }
     
     private func setupUi() {
         if isSetupUi { return }

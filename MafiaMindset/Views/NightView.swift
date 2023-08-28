@@ -60,7 +60,7 @@ class NightView: UIView {
         titleLabel.font = .rounded(ofSize: 20, weight: .regular)
         roleLabel.morphingEffect = .evaporate
         playersLabel.morphingEffect = .evaporate
-        roleLabel.font = .rounded(ofSize: 56, weight: .bold)
+        roleLabel.font = .rounded(ofSize: 52, weight: .bold)
         playersLabel.font = .rounded(ofSize: 20, weight: .medium)
         playersLabel.textAlignment = .center
         playersLabel.lineBreakMode = .byWordWrapping
@@ -172,7 +172,7 @@ class NightView: UIView {
         let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
         vc.view.tintColor = .label
         
-        let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
+        let okAction = UIAlertAction(title: "Ок", style: .default) { _ in
             completed?()
         }
         vc.addAction(okAction)

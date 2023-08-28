@@ -7,11 +7,17 @@
 
 import UIKit
 
-class IntRoleTableViewCell: RoleTableViewCell {
+class IntTableViewCell: EditableTableViewCell {
     
+    var maxValue: Int = 30
     var intValue: Int? {
-        guard let text = contentLabel.text else { return nil }
-        return Int(text)
+        get {
+            guard let text = contentLabel.text else { return nil }
+            return Int(text)
+        }
+        set {
+            contentLabel.text = "\(min(maxValue, newValue ?? 0))"
+        }
     }
     var content: String? {
         get { contentLabel.text }
@@ -23,11 +29,20 @@ class IntRoleTableViewCell: RoleTableViewCell {
     private let contentLabel = UILabel()
     private var isSetupUi = false
     
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUi()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+//    override func didMoveToSuperview() {
+//        super.didMoveToSuperview()
+//        setupUi()
+//    }
+//
     private func setupUi() {
         if isSetupUi { return }
         isSetupUi = true
@@ -38,18 +53,18 @@ class IntRoleTableViewCell: RoleTableViewCell {
     }
     
     @objc private func didTap() {
-        let alertVC = UIAlertController(title: "Колличество", message: "Введи кол-во персонажей данной роли", preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "Колличество", message: "Введи кол-во", preferredStyle: .alert)
         alertVC.view.tintColor = .label
         
         var textField: UITextField?
         alertVC.addTextField { tf in
             textField = tf
-            tf.placeholder = "От 0 до 30"
+            tf.placeholder = "От 0 до \(self.maxValue)"
         }
         
-        let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
+        let okAction = UIAlertAction(title: "Ок", style: .default) { _ in
             guard let value = textField?.text, !value.isEmpty else { return }
-            guard let intValue = Int(value), intValue > 0 && intValue <= 30 else { return }
+            guard let intValue = Int(value), intValue > 0 && intValue <= self.maxValue else { return }
             self.isValid = true
             self.content = value
         }

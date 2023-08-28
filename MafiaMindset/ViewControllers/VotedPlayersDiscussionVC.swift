@@ -39,7 +39,7 @@ class VotedPlayersDiscussionVC: UIViewController {
         
         view.addSubview(timerView)
         timerView.constraintToParent()
-        timerView.seconds = 30
+        timerView.seconds = GlobalSettings.shared.votedPlayerDiscussionSeconds
         
         buttonVC = .init(didTap: { [weak self] () in
             self?.didTapDoneButton()
@@ -61,7 +61,7 @@ class VotedPlayersDiscussionVC: UIViewController {
             return
         }
         
-        timerView.reset(seconds: 30)
+        timerView.reset(seconds: GlobalSettings.shared.votedPlayerDiscussionSeconds)
         title = "Оправдание \(players[currentPlayerIndex].to + 1)"
     }
 }

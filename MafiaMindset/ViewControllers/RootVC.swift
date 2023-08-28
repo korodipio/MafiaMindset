@@ -16,7 +16,8 @@ class RootVC: UIViewController {
     private var isPresented = false
     private var selectedCellIndex: IndexPath?
     private var models: [SessionModel] = []
-
+    private var buttonVC: ButtonVC!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUi()
@@ -103,8 +104,9 @@ class RootVC: UIViewController {
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .label
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "plus"), style: .done, target: self, action: #selector(didTapCreateSessionButton))
+//        
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "plus"), style: .done, target: self, action: #selector(didTapCreateSessionButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "slider.vertical.3"), style: .done, target: self, action: #selector(didTapConfigureButton))
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -115,9 +117,21 @@ class RootVC: UIViewController {
         view.addSubview(tableView)
         tableView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         tableView.constraintToParent()
+        tableView.contentInset.bottom = 80
         tableView.register(SessionTableViewCell.self, forCellReuseIdentifier: SessionTableViewCell.identifier)
         
         transitionManager.presentingFromVC = self
+        
+        buttonVC = .init(didTap: { [weak self] () in
+            self?.didTapCreateSessionButton()
+        })
+        add(buttonVC)
+        buttonVC.buttonTitle = "Создать игру"
+    }
+    
+    @objc private func didTapConfigureButton() {
+        let vc = GlobalSettingsVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func didTapCreateSessionButton() {
@@ -144,16 +158,16 @@ class RootVC: UIViewController {
     }
     
     private func createSessionWith(_ model: SessionModel) {
-        let vc = CardAssignmentVC(onComplete: { [weak self] model in
+        let vc = CardAssignmentVC(model: model) { [weak self] model in
             self?.startFirstNight(model)
-        }, model: model)
+        }
         navigationController?.setViewControllers([self, vc], animated: true)
     }
     
     private func startFirstNight(_ model: SessionModel) {
-        let vc = FirstNightVC(onComplete: { [weak self] model in
+        let vc = FirstNightVC(model: model) { [weak self] model in
             self?.startFirstDay(model)
-        }, model: model)
+        }
         navigationController?.setViewControllers([self, vc], animated: true)
     }
     

@@ -33,7 +33,7 @@ class FirstDayVC: UIViewController {
         
         view.addSubview(timerView)
         timerView.constraintToParent()
-        timerView.seconds = 60 * 3
+        timerView.seconds = GlobalSettings.shared.globalDiscussionSeconds
         timerView.onComplete = { [weak self] () in
             guard let self else { return }
             self.onComplete()

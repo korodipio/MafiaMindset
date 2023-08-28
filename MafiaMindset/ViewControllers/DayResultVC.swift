@@ -56,7 +56,7 @@ class DayResultVC: UIViewController {
             self?.didTapDoneButton()
         })
         add(buttonVC)
-        buttonVC.buttonTitle = "Ok"
+        buttonVC.buttonTitle = "Ок"
         
         handleData()
     }
@@ -76,7 +76,12 @@ class DayResultVC: UIViewController {
         dayModel.votedPlayers.forEach { v1 in
             output.append("За исключение \(v1.to + 1): \(v1.voteCount)")
         }
-        output.append("Воздержались и отправились\nв последнего: \(dayModel.nonVotedPlayersCount)")
+        if GlobalSettings.shared.unusedVotesToLastPlayer {
+            output.append("Воздержались и отправились\nв последнего: \(dayModel.nonVotedPlayersCount)")
+        }
+        else {
+            output.append("Пропустили голосование: \(dayModel.nonVotedPlayersCount)")
+        }
     }
     
     @objc private func didTapDoneButton() {

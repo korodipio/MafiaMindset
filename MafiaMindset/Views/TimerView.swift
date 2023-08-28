@@ -19,7 +19,7 @@ class TimerView: UIView {
     var onComplete: (() -> Void)?
     var seconds: TimeInterval = 0 {
         didSet {
-            didChangeSeconds()
+            didChangeSeconds(oldValue: oldValue)
         }
     }
     var title: String? {
@@ -27,6 +27,7 @@ class TimerView: UIView {
         set { titleLabel.text = newValue }
     }
     var vibroFeedback = true
+    private lazy var feedback = UIImpactFeedbackGenerator(style: .rigid)
     private var engine: CHHapticEngine?
     private var timer: Timer?
     private let titleLabel = LTMorphingLabel()
@@ -168,7 +169,7 @@ class TimerView: UIView {
             initInterval = current
             self.seconds -= min(delta, self.seconds)
             if self.seconds == 0 {
-                if self.vibroFeedback {
+                if self.vibroFeedback && !GlobalSettings.shared.disableVibration {
                     self.playHapticPattern()
                 }
                 self.stop()
@@ -226,7 +227,13 @@ class TimerView: UIView {
         }
     }
     
-    private func didChangeSeconds() {
-        timerLabel.text = String(format: "%.f", self.seconds)
+    private func didChangeSeconds(oldValue: TimeInterval) {
+        let str = String(format: "%.f", self.seconds)
+        if str != timerLabel.text && self.seconds != 0 {
+            if !GlobalSettings.shared.disableVibration {
+                feedback.impactOccurred()
+            }
+        }
+        timerLabel.text = str
     }
 }

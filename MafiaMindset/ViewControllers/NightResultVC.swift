@@ -57,7 +57,7 @@ class NightResultVC: UIViewController {
             self?.didTapDoneButton()
         })
         add(buttonVC)
-        buttonVC.buttonTitle = "Ok"
+        buttonVC.buttonTitle = "Ок"
 
         handleData()
     }

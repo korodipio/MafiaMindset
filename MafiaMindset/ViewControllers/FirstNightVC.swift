@@ -19,7 +19,7 @@ class FirstNightVC: UIViewController {
     private let playersLabel = LTMorphingLabel()
     private var buttonVC: ButtonVC!
     
-    init(onComplete: @escaping (SessionModel) -> Void, model: SessionModel) {
+    init(model: SessionModel, onComplete: @escaping (SessionModel) -> Void) {
         self.onComplete = onComplete
         self.model = model
         super.init(nibName: nil, bundle: nil)
@@ -43,7 +43,7 @@ class FirstNightVC: UIViewController {
         titleLabel.font = .rounded(ofSize: 20, weight: .regular)
         roleLabel.morphingEffect = .evaporate
         playersLabel.morphingEffect = .evaporate
-        roleLabel.font = .rounded(ofSize: 56, weight: .bold)
+        roleLabel.font = .rounded(ofSize: 52, weight: .bold)
         playersLabel.font = .rounded(ofSize: 20, weight: .medium)
         playersLabel.textAlignment = .center
         playersLabel.lineBreakMode = .byWordWrapping

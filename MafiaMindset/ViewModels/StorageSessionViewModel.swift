@@ -17,12 +17,6 @@ class StorageSessionViewModel {
         realm = try! Realm()
     }
     
-    func clearAll() {
-        try! realm.write({
-            realm.deleteAll()
-        })
-    }
-    
     private func getDaysFromStorage(_ sm: StorageSessionModel) -> [DayModel] {
         sm.days.compactMap { sd in
             let d = DayModel()

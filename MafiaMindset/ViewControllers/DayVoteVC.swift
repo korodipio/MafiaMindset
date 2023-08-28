@@ -80,7 +80,7 @@ class DayVoteVC: UIViewController {
         if let lastNightLoverSelection {
             let vc = UIAlertController(title: "Игрок \(lastNightLoverSelection + 1) не голосует", message: nil, preferredStyle: .alert)
             vc.view.tintColor = .label
-            vc.addAction(.init(title: "Ok", style: .cancel))
+            vc.addAction(.init(title: "Ок", style: .cancel))
             present(vc, animated: true)
         }
         
@@ -100,7 +100,7 @@ class DayVoteVC: UIViewController {
             tf = textField
             textField.placeholder = "Введи кол-во голосов от 0 до \(self.availableVotesCount())"
         }
-        let okAction = UIAlertAction(title: "Ok", style: .default) { _ in
+        let okAction = UIAlertAction(title: "Ок", style: .default) { _ in
             guard let value = tf?.text, !value.isEmpty else { return }
             guard let intValue = Int(value), intValue >= 0 && intValue <= self.availableVotesCount() else { return }
             self.players[self.currentPlayerIndex].voteCount = intValue
@@ -119,10 +119,33 @@ class DayVoteVC: UIViewController {
         return nonVotedPlayersCount
     }
     
+    private func pushViewController(_ vc: UIViewController) {
+        // Inherit left bar button
+        vc.navigationItem.leftBarButtonItem = navigationItem.leftBarButtonItem
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func initiateRevoting() {
+        let vc = VotedPlayersDiscussionVC(dayModel: dayModel) { [weak self] () in
+            guard let self else { return }
+            
+            let vc = DayVoteVC(model: self.model, dayModel: self.dayModel) { [weak self] () in
+                guard let self else { return }
+                self.onComplete()
+            }
+            vc.revoting = true
+            pushViewController(vc)
+        }
+        pushViewController(vc)
+    }
+    
     private func finishVote() {
         let nonVotedPlayersCount = availableVotesCount()
         
-        players.last?.voteCount += nonVotedPlayersCount
+        if GlobalSettings.shared.unusedVotesToLastPlayer {
+            players.last?.voteCount += nonVotedPlayersCount
+        }
+        
         dayModel.nonVotedPlayersCount = nonVotedPlayersCount
         
         let sorted = players.sorted { v1, v2 in
@@ -137,20 +160,17 @@ class DayVoteVC: UIViewController {
                 return voteModel
             }
             if mostVotedPlayers.count >= 2 {
-                let vc = UIAlertController(title: "Что делать будем дальше?", message: nil, preferredStyle: .alert)
+                let pl = mostVotedPlayers.compactMap { voteModel in
+                    "\(voteModel.to + 1)"
+                }.joined(separator: ", ")
+                let vc = UIAlertController(title: "Что будем делать?", message: "Переголосование: " + pl, preferredStyle: .alert)
                 vc.view.tintColor = .label
                 
                 let continueAction = UIAlertAction(title: "Переголосование", style: .default) { _ in
                     self.dayModel.votedPlayers = mostVotedPlayers
-                    let vc = DayVoteVC(model: self.model, dayModel: self.dayModel) { [weak self] () in
-                        guard let self else { return }
-                        self.onComplete()
-                    }
-                    vc.navigationItem.leftBarButtonItem = self.navigationItem.leftBarButtonItem
-                    vc.revoting = true
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    self.initiateRevoting()
                 }
-                let cancelAction = UIAlertAction(title: "Продолжить никого не исключая", style: .cancel) { _ in
+                let cancelAction = UIAlertAction(title: "Продолжаем без исключения", style: .default) { _ in
                     self.onComplete()
                 }
                 vc.addAction(continueAction)

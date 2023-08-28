@@ -113,11 +113,11 @@ extension SessionTransitionManager: UIViewControllerAnimatedTransitioning {
                 toView.transform = .identity
                 
             } completion: { _ in
+                
                 toVC.sessionView.setNeedsLayout()
                 toVC.sessionView.isHidden = false
                 placeholderView.isHidden = true
                 ctx.completeTransition(!ctx.transitionWasCancelled)
-
             }
 
         case .dismiss:

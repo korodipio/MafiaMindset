@@ -7,24 +7,11 @@
 
 import UIKit
 
-enum SessionCellId: String {
-    case total = "Total"
-    case maf = "Mafia"
-    case wolf = "Wolf"
-    case boss = "Boss"
-    case medic = "Medic"
-    case commissar = "Commissar"
-    case patrol = "Patrol"
-    case maniac = "Maniac"
-    case bloodhound = "Bloodhound"
-    case lover = "Lover"
-}
-
-class RoleTableViewCell: UITableViewCell {
+class EditableTableViewCell: UITableViewCell {
     
-    var onUpdate: ((RoleTableViewCell) -> Void)?
+    var onUpdate: ((EditableTableViewCell) -> Void)?
     private var _id: String?
-    var id: SessionCellId?
+    var id: String?
     private let stackView = UIStackView()
     private let titleLabel = UILabel()
     private let contentBox = UILabel()
@@ -94,10 +81,10 @@ class RoleTableViewCell: UITableViewCell {
     }
     
     @objc private func didTapHelpButton() {
-        let alertVC = UIAlertController(title: "Информация о роли", message: helpDescription, preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "Информация", message: helpDescription, preferredStyle: .alert)
         alertVC.view.tintColor = .label
         
-        let okAction = UIAlertAction(title: "Ok", style: .cancel)
+        let okAction = UIAlertAction(title: "Ок", style: .cancel)
         alertVC.addAction(okAction)
         
         presentedVC?.present(alertVC, animated: true)
