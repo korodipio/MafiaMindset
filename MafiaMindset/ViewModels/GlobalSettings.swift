@@ -23,36 +23,25 @@ enum DiscussionOrder: String {
     }
 }
 
-class GlobalSettings: ObservableObject {
-    static let shared: GlobalSettings = {
-       return GlobalSettings.loadGlobalSettings
-    }()
-    
-    @Published var globalDiscussionSeconds: TimeInterval = 60 * 3
-    @Published var playerDiscussionSeconds: TimeInterval = 60
-    @Published var votedPlayerDiscussionSeconds: TimeInterval = 30
-    @Published var discussionOrder: DiscussionOrder = .globalDiscussionThenPlayer
-    @Published var unusedVotesToLastPlayer: Bool = true
-    @Published var disableVibration = false
-    
-    private var cancellables: [AnyCancellable] = []
-    private var ignoreChanges = false
-    
-    init() {
-        objectWillChange.sink { [weak self] v in
-            guard let self, !self.ignoreChanges else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.save()
-            }
-        }.store(in: &cancellables)
+class GlobalSettings {
+    static var shared: GlobalSettings {
+        GlobalSettings.loadGlobalSettings
     }
+    
+    var globalDiscussionSeconds: TimeInterval = 60 * 3
+    var playerDiscussionSeconds: TimeInterval = 60
+    var votedPlayerDiscussionSeconds: TimeInterval = 30
+    var kickedPlayerDiscussionSeconds: TimeInterval = 60
+    var discussionOrder: DiscussionOrder = .globalDiscussionThenPlayer
+    var unusedVotesToLastPlayer: Bool = true
+    var disableVibration = false
     
     static var loadGlobalSettings: GlobalSettings {
         let r = GlobalSettings()
-        guard let realm = try? Realm() else { return r }
+        let config = Realm.Configuration(
+            schemaVersion: 2)
+        guard let realm = try? Realm(configuration: config) else { return r }
         guard let stored = realm.objects(StorageGlobalSettings.self).first else { return r }
-        
-        r.ignoreChanges = true
         
         r.disableVibration = stored.disableVibration
         r.unusedVotesToLastPlayer = stored.unusedVotesToLastPlayer
@@ -60,9 +49,22 @@ class GlobalSettings: ObservableObject {
         r.globalDiscussionSeconds = stored.globalDiscussionSeconds
         r.playerDiscussionSeconds = stored.playerDiscussionSeconds
         r.votedPlayerDiscussionSeconds = stored.votedPlayerDiscussionSeconds
+        r.kickedPlayerDiscussionSeconds = stored.kickedPlayerDiscussionSeconds
         
-        r.ignoreChanges = false
-
+        return r
+    }
+    
+    func copy() -> GlobalSettings {
+        let r = GlobalSettings()
+        
+        r.disableVibration = disableVibration
+        r.unusedVotesToLastPlayer = unusedVotesToLastPlayer
+        r.discussionOrder = discussionOrder
+        r.globalDiscussionSeconds = globalDiscussionSeconds
+        r.playerDiscussionSeconds = playerDiscussionSeconds
+        r.votedPlayerDiscussionSeconds = votedPlayerDiscussionSeconds
+        r.kickedPlayerDiscussionSeconds = kickedPlayerDiscussionSeconds
+        
         return r
     }
     
@@ -83,6 +85,7 @@ class StorageGlobalSettings: Object {
     @Persisted var globalDiscussionSeconds: TimeInterval = 60 * 3
     @Persisted var playerDiscussionSeconds: TimeInterval = 60
     @Persisted var votedPlayerDiscussionSeconds: TimeInterval = 30
+    @Persisted var kickedPlayerDiscussionSeconds: TimeInterval = 60
     @Persisted var discussionOrder: String = DiscussionOrder.globalDiscussionThenPlayer.rawValue
     @Persisted var unusedVotesToLastPlayer: Bool = true
     @Persisted var disableVibration = false
@@ -96,6 +99,7 @@ class StorageGlobalSettings: Object {
         r.discussionOrder = gs.discussionOrder.rawValue
         r.unusedVotesToLastPlayer = gs.unusedVotesToLastPlayer
         r.disableVibration = gs.disableVibration
+        r.kickedPlayerDiscussionSeconds = gs.kickedPlayerDiscussionSeconds
 
         return r
     }

@@ -27,8 +27,7 @@ class IntTableViewCell: EditableTableViewCell {
         }
     }
     private let contentLabel = UILabel()
-    private var isSetupUi = false
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUi()
@@ -37,16 +36,8 @@ class IntTableViewCell: EditableTableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    override func didMoveToSuperview() {
-//        super.didMoveToSuperview()
-//        setupUi()
-//    }
-//
+
     private func setupUi() {
-        if isSetupUi { return }
-        isSetupUi = true
-        
         contentLabel.font = .rounded(ofSize: 16, weight: .medium)
         self.addContentView(contentLabel)
         addTapGesture(target: self, action: #selector(didTap))

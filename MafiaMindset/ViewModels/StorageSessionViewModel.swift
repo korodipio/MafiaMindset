@@ -11,10 +11,8 @@ class StorageSessionViewModel {
     private var realm: Realm!
     
     init() {
-        let config = Realm.Configuration(
-            schemaVersion: 3)
-        Realm.Configuration.defaultConfiguration = config
-        realm = try! Realm()
+        realm = try! Realm(configuration: Realm.Configuration(
+            schemaVersion: 4))
     }
     
     private func getDaysFromStorage(_ sm: StorageSessionModel) -> [DayModel] {

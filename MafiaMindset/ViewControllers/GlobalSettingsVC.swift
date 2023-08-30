@@ -13,6 +13,7 @@ class GlobalSettingsVC: UIViewController {
     private var isPresented = false
     private var cells: [EditableTableViewCell] = []
     private var buttonVC: ButtonVC!
+    private let settings = GlobalSettings.shared.copy()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,9 +52,10 @@ class GlobalSettingsVC: UIViewController {
         let discussionOrderCell = VariantsTableViewCell(variants: [
             .init(id: DiscussionOrder.globalDiscussionThenPlayer.rawValue, title: DiscussionOrder.globalDiscussionThenPlayer.title),
             .init(id: DiscussionOrder.playersDiscussionThenGlobal.rawValue, title: DiscussionOrder.playersDiscussionThenGlobal.title)
-        ], defaultVariantIndex: GlobalSettings.shared.discussionOrder == .globalDiscussionThenPlayer ? 0 : 1 , onComplete: { variant in
+        ], defaultVariantIndex: GlobalSettings.shared.discussionOrder == .globalDiscussionThenPlayer ? 0 : 1 , onComplete: { [weak self] variant in
             guard let order = DiscussionOrder(rawValue: variant.id) else { return }
-            GlobalSettings.shared.discussionOrder = order
+            guard let self else { return }
+            self.settings.discussionOrder = order
         })
         discussionOrderCell.title = "Порядок дискуссий"
         discussionOrderCell.helpDescription = """
@@ -66,56 +68,73 @@ class GlobalSettingsVC: UIViewController {
         
         let globalDiscussionSecondsCell = IntTableViewCell()
         globalDiscussionSecondsCell.title = "Минут общей дискуссии"
-        globalDiscussionSecondsCell.onUpdate = { [weak globalDiscussionSecondsCell] _ in
+        globalDiscussionSecondsCell.onUpdate = { [weak globalDiscussionSecondsCell, weak self] _ in
             guard let globalDiscussionSecondsCell else { return }
-            GlobalSettings.shared.globalDiscussionSeconds = TimeInterval(globalDiscussionSecondsCell.intValue ?? 2) * 60.0
+            guard let self else { return }
+            self.settings.globalDiscussionSeconds = TimeInterval(globalDiscussionSecondsCell.intValue ?? 2) * 60.0
         }
         globalDiscussionSecondsCell.maxValue = 5
-        globalDiscussionSecondsCell.intValue = Int(GlobalSettings.shared.globalDiscussionSeconds) / 60
+        globalDiscussionSecondsCell.intValue = Int(settings.globalDiscussionSeconds) / 60
         cells.append(globalDiscussionSecondsCell)
      
         let playerDiscussionSecondsCell = IntTableViewCell()
         playerDiscussionSecondsCell.title = "Секунд дискуссии игрока"
-        playerDiscussionSecondsCell.onUpdate = { [weak playerDiscussionSecondsCell] _ in
+        playerDiscussionSecondsCell.onUpdate = { [weak playerDiscussionSecondsCell, weak self] _ in
             guard let playerDiscussionSecondsCell else { return }
-            GlobalSettings.shared.playerDiscussionSeconds = TimeInterval(playerDiscussionSecondsCell.intValue ?? 60)
+            guard let self else { return }
+            self.settings.playerDiscussionSeconds = TimeInterval(playerDiscussionSecondsCell.intValue ?? 60)
         }
         playerDiscussionSecondsCell.maxValue = 120
-        playerDiscussionSecondsCell.intValue = Int(GlobalSettings.shared.playerDiscussionSeconds)
+        playerDiscussionSecondsCell.intValue = Int(settings.playerDiscussionSeconds)
         cells.append(playerDiscussionSecondsCell)
 
         let votedPlayerDiscussionSecondsCell = IntTableViewCell()
         votedPlayerDiscussionSecondsCell.title = "Секунд оправдания игрока"
-        votedPlayerDiscussionSecondsCell.onUpdate = { [weak votedPlayerDiscussionSecondsCell] _ in
+        votedPlayerDiscussionSecondsCell.onUpdate = { [weak votedPlayerDiscussionSecondsCell, weak self] _ in
             guard let votedPlayerDiscussionSecondsCell else { return }
-            GlobalSettings.shared.votedPlayerDiscussionSeconds = TimeInterval(votedPlayerDiscussionSecondsCell.intValue ?? 30)
+            guard let self else { return }
+            self.settings.votedPlayerDiscussionSeconds = TimeInterval(votedPlayerDiscussionSecondsCell.intValue ?? 30)
         }
         votedPlayerDiscussionSecondsCell.maxValue = 120
-        votedPlayerDiscussionSecondsCell.intValue = Int(GlobalSettings.shared.votedPlayerDiscussionSeconds)
+        votedPlayerDiscussionSecondsCell.intValue = Int(settings.votedPlayerDiscussionSeconds)
         cells.append(votedPlayerDiscussionSecondsCell)
+        
+        let kickedPlayerDiscussionSecondsCell = IntTableViewCell()
+        kickedPlayerDiscussionSecondsCell.title = "Секунд покидающего игрока"
+        kickedPlayerDiscussionSecondsCell.onUpdate = { [weak kickedPlayerDiscussionSecondsCell, weak self] _ in
+            guard let kickedPlayerDiscussionSecondsCell else { return }
+            guard let self else { return }
+            self.settings.kickedPlayerDiscussionSeconds = TimeInterval(kickedPlayerDiscussionSecondsCell.intValue ?? 30)
+        }
+        kickedPlayerDiscussionSecondsCell.maxValue = 120
+        kickedPlayerDiscussionSecondsCell.intValue = Int(settings.kickedPlayerDiscussionSeconds)
+        cells.append(kickedPlayerDiscussionSecondsCell)
         
         let unusedVotesCell = BoolTableViewCell()
         unusedVotesCell.title = "Сброс голосов в последнего"
         unusedVotesCell.helpDescription = "Если включено: Голоса не проголосовавших игроков идут в последнего выдвинутого игрока"
-        unusedVotesCell.isChecked = GlobalSettings.shared.unusedVotesToLastPlayer
-        unusedVotesCell.onUpdate = { [weak unusedVotesCell] _ in
+        unusedVotesCell.isChecked = settings.unusedVotesToLastPlayer
+        unusedVotesCell.onUpdate = { [weak unusedVotesCell, weak self] _ in
             guard let unusedVotesCell else { return }
-            GlobalSettings.shared.unusedVotesToLastPlayer = unusedVotesCell.isChecked
+            guard let self else { return }
+            self.settings.unusedVotesToLastPlayer = unusedVotesCell.isChecked
         }
         cells.append(unusedVotesCell)
         
         let disableVibrationCell = BoolTableViewCell()
         disableVibrationCell.title = "Отключить вибрацию"
         disableVibrationCell.helpDescription = "Если включено: Вибрация не будет использоваться приложением"
-        disableVibrationCell.isChecked = GlobalSettings.shared.disableVibration
-        disableVibrationCell.onUpdate = { [weak disableVibrationCell] _ in
+        disableVibrationCell.isChecked = settings.disableVibration
+        disableVibrationCell.onUpdate = { [weak disableVibrationCell, weak self] _ in
             guard let disableVibrationCell else { return }
-            GlobalSettings.shared.disableVibration = disableVibrationCell.isChecked
+            guard let self else { return }
+            self.settings.disableVibration = disableVibrationCell.isChecked
         }
         cells.append(disableVibrationCell)
     }
     
     private func didTapDoneButton() {
+        settings.save()
         navigationController?.popViewController(animated: true)
     }
 }
