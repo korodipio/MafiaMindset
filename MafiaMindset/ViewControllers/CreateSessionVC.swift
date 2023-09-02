@@ -8,6 +8,8 @@
 import UIKit
 
 class CreateSessionVC: UIViewController {
+    
+    static var didShowReminder = false
 
     private let onComplete: (SessionModel) -> Void
     private var model = SessionModel()
@@ -64,6 +66,22 @@ class CreateSessionVC: UIViewController {
     }
     
     @objc private func didTapDoneButton() {
+        if !CreateSessionVC.didShowReminder {
+            let vc = UIAlertController(title: "Ты не забыл настроить сессию?", message: nil, preferredStyle: .alert)
+            vc.view.tintColor = .black
+            
+            vc.addAction(.init(title: "Не забыл, продолжаем", style: .default, handler: { _ in
+                self.onComplete(self.model)
+            }))
+            vc.addAction(.init(title: "Забыл, зараза", style: .cancel, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            present(vc, animated: true)
+            
+            CreateSessionVC.didShowReminder = true
+            return
+        }
+        
         onComplete(model)
     }
 

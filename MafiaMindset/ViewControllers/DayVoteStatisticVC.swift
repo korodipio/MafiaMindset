@@ -40,7 +40,7 @@ class DayVoteStatisticVC: UIViewController {
     }
 
     private func setupUi() {
-        title = "Статистика дня"
+        title = "Статистика"
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
         
@@ -82,12 +82,12 @@ extension DayVoteStatisticVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        12
+        return section == tableView.numberOfSections - 1 ? 24 : 12
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         let count = dayModel.votedPlayers.count
-        return count + 1
+        return count + 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -107,8 +107,11 @@ extension DayVoteStatisticVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        if indexPath.section == tableView.numberOfSections - 1 {
+        if indexPath.section == tableView.numberOfSections - 2 {
             cell.title = "Не проголосовало: \(availableVotesCount())"
+        }
+        else if indexPath.section == tableView.numberOfSections - 1 {
+            cell.title = "Детальная статистика"
         }
         else {
             let votedPlayer = dayModel.votedPlayers[indexPath.section]
@@ -119,7 +122,13 @@ extension DayVoteStatisticVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == tableView.numberOfSections - 1 else { return }
         
+        let vc = DetailedSessionVC(model: model) { _ in
+            
+        }
+        vc.isContinuable = false
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -63,22 +63,22 @@ class RootVC: UIViewController {
         title = "Игры"
         view.backgroundColor = .secondarySystemBackground
         
-//        for _ in 0..<100 {
-//            let model = SessionModel()
-//            model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
-//            model.deadPlayers = [0, 6]
-//            model.mafCount = 1
-//            model.bossCount = 1
-//            model.civCount = 2
-//            model.wolfCount = 1
-//            model.bloodhoundCount = 1
-//            model.maniacCount = 1
-//            model.medicCount = 1
-//            model.commissarCount = 1
-//            model.patrolCount = 1
-//            storageViewModel.saveSession(model)
-//        }
-//        loadSessions()
+        //        for _ in 0..<100 {
+        //            let model = SessionModel()
+        //            model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
+        //            model.deadPlayers = [0, 6]
+        //            model.mafCount = 1
+        //            model.bossCount = 1
+        //            model.civCount = 2
+        //            model.wolfCount = 1
+        //            model.bloodhoundCount = 1
+        //            model.maniacCount = 1
+        //            model.medicCount = 1
+        //            model.commissarCount = 1
+        //            model.patrolCount = 1
+        //            storageViewModel.saveSession(model)
+        //        }
+        //        loadSessions()
         
         let label = UILabel()
         view.addSubview(label)
@@ -104,10 +104,10 @@ class RootVC: UIViewController {
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .label
-//        
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "plus"), style: .done, target: self, action: #selector(didTapCreateSessionButton))
+        //
+        //        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "plus"), style: .done, target: self, action: #selector(didTapCreateSessionButton))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "slider.vertical.3"), style: .done, target: self, action: #selector(didTapConfigureButton))
-
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.sectionHeaderTopPadding = 0
@@ -135,22 +135,22 @@ class RootVC: UIViewController {
     }
     
     @objc private func didTapCreateSessionButton() {
-//        let model = SessionModel()
-//        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
-//        model.deadPlayers = [4, 6, 0]
-//        model.mafCount = 1
-//        model.bossCount = 1
-//        model.civCount = 2
-//        model.wolfCount = 1
-//        model.bloodhoundCount = 1
-//        model.maniacCount = 1
-//        model.medicCount = 1
-//        model.commissarCount = 1
-//        model.patrolCount = 1
-//        model.dayNightCycleType = .day
-
-//        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
-
+        //        let model = SessionModel()
+        //        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
+        //        model.deadPlayers = [4, 6, 0]
+        //        model.mafCount = 1
+        //        model.bossCount = 1
+        //        model.civCount = 2
+        //        model.wolfCount = 1
+        //        model.bloodhoundCount = 1
+        //        model.maniacCount = 1
+        //        model.medicCount = 1
+        //        model.commissarCount = 1
+        //        model.patrolCount = 1
+        //        model.dayNightCycleType = .day
+        
+        //        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
+        
         let vc = CreateSessionVC { [weak self] model in
             self?.createSessionWith(model)
         }
@@ -159,7 +159,10 @@ class RootVC: UIViewController {
     
     private func createSessionWith(_ model: SessionModel) {
         let vc = CardAssignmentVC(model: model) { [weak self] model in
-            self?.startFirstNight(model)
+            guard let self else { return }
+            
+            self.storageViewModel.saveSession(model)
+            self.startFirstNight(model)
         }
         navigationController?.setViewControllers([self, vc], animated: true)
     }
@@ -222,10 +225,22 @@ extension RootVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedCellIndex = indexPath
-
         let model = models[indexPath.section]
+        
         let vc = SessionVC(model: model) { [weak self] () in
             self?.startDayNight(model)
+        }
+        vc.sessionView.isShowDetailedButton = true
+        vc.sessionView.showDetailedView = { [weak self] model in
+            guard let self else { return }
+            
+            vc.dismiss(animated: true) {
+                let vc = DetailedSessionVC(model: model) { [weak self] model in
+                    self?.startDayNight(model)
+                }
+                vc.isContinuable = false
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
         vc.modalPresentationStyle = .overFullScreen
         vc.transitioningDelegate = transitionManager
@@ -239,7 +254,7 @@ extension RootVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         let model = models[indexPath.section]
-
+        
         deleteSession(model)
         tableView.deleteSections([indexPath.section], with: .automatic)
     }
@@ -265,5 +280,5 @@ extension RootVC: UINavigationControllerDelegate {
         default:
             return nil
         }
-    }    
+    }
 }

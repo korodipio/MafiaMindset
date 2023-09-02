@@ -30,6 +30,7 @@ class FirstDayVC: UIViewController {
     private func setupUi() {
         title = "Утро. Обсуждение"
         view.backgroundColor = .secondarySystemBackground
+        navigationItem.hidesBackButton = true
         
         view.addSubview(timerView)
         timerView.constraintToParent()

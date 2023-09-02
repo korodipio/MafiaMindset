@@ -2,7 +2,7 @@ import UIKit
 import RealmSwift
 
 enum SessionRoleId: String, CaseIterable {
-    static let roleWakeUpOrder: [SessionRoleId] = [.maf, .boss, .wolf, .maniac, .lover, .commissar, .patrol, .bloodhound, .medic, .civ]
+    static let roleWakeUpOrder: [SessionRoleId] = [.lover, .maf, .boss, .wolf, .maniac, .commissar, .patrol, .bloodhound, .medic, .civ]
     
     case civ = "Civilian"
     case maf = "Mafia"
@@ -52,6 +52,8 @@ enum DayNightCycleType: Int {
 }
 
 class NightModel {
+    var unixDateCreated = Date().timeIntervalSince1970
+    
     var mafia: Int?
     var boss: Int?
     var maniac: Int?
@@ -79,6 +81,8 @@ class DayModel {
         return votedPlayersCount
     }
 
+    var unixDateCreated = Date().timeIntervalSince1970
+    
     var votedPlayers: [DayVoteModel] = []
     var kickedPlayers: [Int] = []
     var nonVotedPlayersCount: Int = 0

@@ -117,7 +117,6 @@ class NightVC: UIViewController {
     }
     
     private func nightCompleted() {
-        model.nights.append(nightModel)
         showResult(for: nightModel)
     }
     
@@ -224,16 +223,27 @@ class NightVC: UIViewController {
             }
             playersWithAnother(roles: [role, .maf]).sorted().forEach { ind in
                 let action = UIAlertAction(title: "\(ind + 1)", style: .default) { _ in
-                    
-                    var isCorrect = false
-                    if self.model.isAlive(role: .commissar) {
-                        isCorrect = self.playersWith(roles: [.commissar]).contains(ind)
-                    } else if self.model.isPatrolExists {
-                        isCorrect = self.playersWith(roles: [.patrol]).contains(ind)
-                    }
                     self.nightModel.boss = ind
-                    self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil) {
-                        complete()
+                    
+                    var takenByLover = false
+                    if let loverSelection = self.nightModel.lover {
+                        takenByLover = loverSelection == ind
+                    }
+                    if takenByLover {
+                        self.showAlert(title: "Мимо", message: nil) {
+                            complete()
+                        }
+                    }
+                    else {
+                        var isCorrect = false
+                        if self.model.isAlive(role: .commissar) {
+                            isCorrect = self.playersWith(roles: [.commissar]).contains(ind)
+                        } else if self.model.isPatrolExists {
+                            isCorrect = self.playersWith(roles: [.patrol]).contains(ind)
+                        }
+                        self.showAlert(title: isCorrect ? "Попал" : "Мимо", message: nil) {
+                            complete()
+                        }
                     }
                 }
                 vc.addAction(action)

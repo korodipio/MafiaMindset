@@ -8,6 +8,7 @@
 import RealmSwift
 
 class StorageNightModel: Object {
+    @Persisted var unixDateCreated: TimeInterval = 0
     @Persisted var mafia: Int?
     @Persisted var boss: Int?
     @Persisted var maniac: Int?
@@ -19,8 +20,17 @@ class StorageNightModel: Object {
     @Persisted var dies = List<Int>()
 }
 
+class StorageDayVoteModel: Object {
+    @Persisted var by: Int = 0
+    @Persisted var to: Int = 0
+    @Persisted var voteCount: Int = 0
+}
+
 class StorageDayModel: Object {
+    @Persisted var unixDateCreated: TimeInterval = 0
     @Persisted var kickedPlayers = List<Int>()
+    @Persisted var votedPlayers = List<StorageDayVoteModel>()
+    @Persisted var nonVotedPlayersCount: Int = 0
 }
 
 class StorageSessionModel: Object {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LabelTableViewCell: UITableViewCell {
+class LabelTableViewCell: GenericTableViewCell {
 
     static let identifier = "LabelTableViewCell"
 
@@ -30,23 +30,9 @@ class LabelTableViewCell: UITableViewCell {
         setupUi()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = contentView.frame.inset(by: .init(top: 0, left: layoutMargins.left, bottom: 0, right: layoutMargins.right))
-    }
-
     private func setupUi() {
         if isSetupUi { return }
         isSetupUi = true
-        
-        selectionStyle = .none
-        clipsToBounds = false
-        contentView.layer.cornerRadius = 12
-        contentView.clipsToBounds = true
-        contentView.backgroundColor = .tertiarySystemBackground
-        backgroundColor = .clear
-        layer.shadowOffset = .zero
-        layer.shadowRadius = 4
         
         contentView.addSubview(stackView)
         stackView.isLayoutMarginsRelativeArrangement = true
@@ -56,7 +42,7 @@ class LabelTableViewCell: UITableViewCell {
         stackView.axis = .horizontal
         stackView.backgroundColor = .tertiarySystemBackground
         stackView.addArrangedSubview(titleLabel)
-        stackView.backgroundColor = .clear
+
         titleLabel.font = .rounded(ofSize: 16, weight: .medium)
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping

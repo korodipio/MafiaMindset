@@ -196,7 +196,7 @@ class DayVC: UIViewController {
             stateLabel.text = "Последнее слово"
         case .complete:
             stateLabel.text = "Результаты"
-            
+
             let vc = DayResultVC(dayModel: dayModel) { [weak self] () in
                 guard let self else { return }
                 self.onComplete(dayModel)

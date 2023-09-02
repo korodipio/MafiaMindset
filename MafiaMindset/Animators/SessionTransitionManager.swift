@@ -55,10 +55,12 @@ extension SessionTransitionManager: UIViewControllerAnimatedTransitioning {
         animationBlurView.frame = view.bounds
     }
     
-    private func createPlaceholder(from view: SessionView) -> SessionView {
+    private func createPlaceholder(from view: SessionView, toView: SessionView) -> SessionView {
         let placeholder = SessionView()
+        placeholder.isShowDetailedButton = toView.isShowDetailedButton
         placeholder.model = view.model
         placeholder.type = view.type
+        placeholder.isShowDetailedButton = view.isShowDetailedButton
         return placeholder
     }
     
@@ -82,7 +84,7 @@ extension SessionTransitionManager: UIViewControllerAnimatedTransitioning {
             toVC.sessionView.type = .full
             toVC.sessionView.isHidden = true
             
-            let placeholderView = createPlaceholder(from: fromCell.sessionView)
+            let placeholderView = createPlaceholder(from: fromCell.sessionView, toView: toVC.sessionView)
             self.placeholderView = placeholderView
 
             animationAddBlurView(to: containerView)

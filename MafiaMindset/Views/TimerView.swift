@@ -229,7 +229,7 @@ class TimerView: UIView {
     
     private func didChangeSeconds(oldValue: TimeInterval) {
         let str = String(format: "%.f", self.seconds)
-        if str != timerLabel.text && self.seconds != 0 {
+        if str != timerLabel.text && self.seconds >= 0 && self.seconds <= 3 {
             if !GlobalSettings.shared.disableVibration {
                 feedback.impactOccurred()
             }

@@ -12,7 +12,7 @@ class StorageSessionViewModel {
     
     init() {
         realm = try! Realm(configuration: Realm.Configuration(
-            schemaVersion: 4))
+            schemaVersion: 6))
     }
     
     private func getDaysFromStorage(_ sm: StorageSessionModel) -> [DayModel] {
@@ -21,6 +21,15 @@ class StorageSessionViewModel {
             sd.kickedPlayers.forEach { ind in
                 d.kickedPlayers.append(ind)
             }
+            sd.votedPlayers.forEach { voteModel in
+                let m = DayVoteModel()
+                m.by = voteModel.by
+                m.to = voteModel.to
+                m.voteCount = voteModel.voteCount
+                d.votedPlayers.append(m)
+            }
+            d.nonVotedPlayersCount = sd.nonVotedPlayersCount
+            d.unixDateCreated = sd.unixDateCreated
             return d
         }
     }
@@ -37,6 +46,7 @@ class StorageSessionViewModel {
             n.bloodhound = sn.bloodhound
             n.medic = sn.medic
             n.lover = sn.lover
+            n.unixDateCreated = sn.unixDateCreated
             sn.dies.forEach { ind in
                 n.dies.append(ind)
             }
@@ -83,6 +93,15 @@ class StorageSessionViewModel {
             d.kickedPlayers.forEach { ind in
                 sd.kickedPlayers.append(ind)
             }
+            d.votedPlayers.forEach { voteModel in
+                let sm = StorageDayVoteModel()
+                sm.by = voteModel.by
+                sm.to = voteModel.to
+                sm.voteCount = voteModel.voteCount
+                sd.votedPlayers.append(sm)
+            }
+            sd.nonVotedPlayersCount = d.nonVotedPlayersCount
+            sd.unixDateCreated = d.unixDateCreated
             l.append(sd)
         }
         return l
@@ -100,6 +119,7 @@ class StorageSessionViewModel {
             sn.bloodhound = n.bloodhound
             sn.medic = n.medic
             sn.lover = n.lover
+            sn.unixDateCreated = n.unixDateCreated
             n.dies.forEach { ind in
                 sn.dies.append(ind)
             }

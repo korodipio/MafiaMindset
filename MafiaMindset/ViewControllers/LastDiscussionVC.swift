@@ -39,7 +39,7 @@ class LastDiscussionVC: UIViewController {
         
         view.addSubview(timerView)
         timerView.constraintToParent()
-        timerView.seconds = 60
+        timerView.seconds = GlobalSettings.shared.kickedPlayerDiscussionSeconds
         timerView.onComplete = { [weak self] () in
             guard let self else { return }
             self.onComplete()

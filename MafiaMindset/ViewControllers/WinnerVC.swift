@@ -74,6 +74,7 @@ class WinnerVC: UIViewController {
         ])
         
         lottieView = .init(name: "lottie_win.json", configuration: .init(renderingEngine: .specific(.coreAnimation)))
+        lottieView.animationSpeed = 1.2
         lottieView.translatesAutoresizingMaskIntoConstraints = false
         lottieView.contentMode = .scaleAspectFill
         view.addSubview(lottieView)

@@ -37,6 +37,7 @@ class FirstNightVC: UIViewController {
     private func setupUi() {
         title = "Ночь. Знакомство"
         view.backgroundColor = .secondarySystemBackground
+        navigationItem.hidesBackButton = true
         
         titleLabel.text = "Просыпается"
         titleLabel.textAlignment = .center

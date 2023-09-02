@@ -42,6 +42,7 @@ class CardAssignmentVC: UIViewController {
     private func setupUi() {
         title = "Раздача ролей"
         view.backgroundColor = .secondarySystemBackground
+        navigationItem.hidesBackButton = true
         
         titleLabel.text = "Игрок под номером"
         titleLabel.textAlignment = .center
