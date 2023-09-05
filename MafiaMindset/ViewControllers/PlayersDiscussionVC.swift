@@ -61,6 +61,13 @@ class PlayersDiscussionVC: UIViewController {
         })
         add(buttonVC)
         buttonVC.buttonTitle = "Далее"
+        
+        if let lastNightLoverSelection {
+            let vc = UIAlertController(title: "Игрок \(lastNightLoverSelection + 1) не учавствует и не голосует из-за любовницы", message: nil, preferredStyle: .alert)
+            vc.view.tintColor = .label
+            vc.addAction(.init(title: "Ок", style: .cancel))
+            present(vc, animated: true)
+        }
     }
     
     @objc private func didTapDoneButton() {

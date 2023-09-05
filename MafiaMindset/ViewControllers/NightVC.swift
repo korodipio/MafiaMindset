@@ -375,7 +375,7 @@ class NightVC: UIViewController {
             }
             
         case .lover:
-            var players = playersWithAnother(roles: [])
+            var players = playersWithAnother(roles: [role])
             if let lastNightLoverSelection {
                 players.removeAll(where: { ind in
                     lastNightLoverSelection == ind

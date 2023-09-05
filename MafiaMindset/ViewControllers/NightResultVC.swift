@@ -96,7 +96,7 @@ class NightResultVC: UIViewController {
             output.append("Выбор Ищейки: \(r + 1)")
         }
         if let r = nightModel.medic {
-            output.append("Выбор Медика: \(r + 1)")
+            output.append("Выбор Доктора: \(r + 1)")
         }
         tableView.reloadData()
     }

@@ -59,7 +59,6 @@ class GlobalSettingsVC: UIViewController {
         })
         discussionOrderCell.title = "Порядок дискуссий"
         discussionOrderCell.helpDescription = """
-            \n
             В какой порядке происходит дискуссия\n
             Общая дискуссия: Сперва общая, а потом каждого игрока\n
             Дискуссия игроков: Сперва каждого игрока, а потом общая\n

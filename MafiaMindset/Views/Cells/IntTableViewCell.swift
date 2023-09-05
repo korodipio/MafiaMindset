@@ -51,6 +51,7 @@ class IntTableViewCell: EditableTableViewCell {
         alertVC.addTextField { tf in
             textField = tf
             tf.placeholder = "От 0 до \(self.maxValue)"
+            tf.keyboardType = .numberPad
         }
         
         let okAction = UIAlertAction(title: "Ок", style: .default) { _ in

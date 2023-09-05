@@ -132,7 +132,7 @@ class DetailedSessionTableViewCell: GenericTableViewCell {
             output.append("Выбор Ищейки: \(r + 1)")
         }
         if let r = nightModel.medic {
-            output.append("Выбор Медика: \(r + 1)")
+            output.append("Выбор Доктора: \(r + 1)")
         }
         
         output.forEach { output in
@@ -156,7 +156,6 @@ class DetailedSessionTableViewCell: GenericTableViewCell {
         }
         dayModel.votedPlayers.forEach { votedPlayer in
             output.append("Выдвинут: \(votedPlayer.to + 1) Игроком: \(votedPlayer.by + 1) Голосов: \(votedPlayer.voteCount)")
-//            output.append("За исключение \(v1.to + 1): \(v1.voteCount)")
         }
         output.append("Пропустили голосование: \(dayModel.nonVotedPlayersCount)")
         

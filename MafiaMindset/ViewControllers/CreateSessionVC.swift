@@ -68,7 +68,7 @@ class CreateSessionVC: UIViewController {
     @objc private func didTapDoneButton() {
         if !CreateSessionVC.didShowReminder {
             let vc = UIAlertController(title: "Ты не забыл настроить сессию?", message: nil, preferredStyle: .alert)
-            vc.view.tintColor = .black
+            vc.view.tintColor = .label
             
             vc.addAction(.init(title: "Не забыл, продолжаем", style: .default, handler: { _ in
                 self.onComplete(self.model)

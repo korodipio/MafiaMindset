@@ -126,16 +126,10 @@ class TimerView: UIView {
         let tapEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [tapIntensity, tapSharpness], relativeTime: 0, duration: 0.2)
         events.append(tapEvent)
         
-        // Followed by a smooth buzz
-        let buzzIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.8)
-        let buzzSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
-        let buzzEvent = CHHapticEvent(eventType: .hapticContinuous, parameters: [buzzIntensity, buzzSharpness], relativeTime: 0.3, duration: 0.5)
-        events.append(buzzEvent)
-        
         // End with a quick tap
         let endTapIntensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
         let endTapSharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 1)
-        let endTapEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [endTapIntensity, endTapSharpness], relativeTime: 0.9)
+        let endTapEvent = CHHapticEvent(eventType: .hapticTransient, parameters: [endTapIntensity, endTapSharpness], relativeTime: 0.3, duration: 0.1)
         events.append(endTapEvent)
         
         do {

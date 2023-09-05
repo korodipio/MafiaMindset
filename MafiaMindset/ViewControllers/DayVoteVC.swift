@@ -95,13 +95,14 @@ class DayVoteVC: UIViewController {
         let vc = UIAlertController(title: "Исключение", message: nil, preferredStyle: .alert)
         vc.view.tintColor = .label
         
-        var tf: UITextField!
-        vc.addTextField { textField in
-            tf = textField
-            textField.placeholder = "Введи кол-во голосов от 0 до \(self.availableVotesCount())"
+        var textField: UITextField!
+        vc.addTextField { tf in
+            textField = tf
+            tf.placeholder = "Введи кол-во голосов от 0 до \(self.availableVotesCount())"
+            tf.keyboardType = .numberPad
         }
         let okAction = UIAlertAction(title: "Ок", style: .default) { _ in
-            guard let value = tf?.text, !value.isEmpty else { return }
+            guard let value = textField?.text, !value.isEmpty else { return }
             guard let intValue = Int(value), intValue >= 0 && intValue <= self.availableVotesCount() else { return }
             self.players[self.currentPlayerIndex].voteCount = intValue
             complete()
