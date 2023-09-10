@@ -15,6 +15,27 @@ enum SessionRoleId: String, CaseIterable {
     case bloodhound = "Bloodhound"
     case lover = "Lover"
     
+    var image: UIImage? {
+        switch self {
+        case .civ:
+            return .init(named: "civilian.png")
+        case .maf, .boss:
+            return .init(named: "mafia.png")
+        case .wolf:
+            return .init(named: "wolf.png")
+        case .maniac:
+            return .init(named: "maniac.png")
+        case .medic:
+            return .init(named: "medic.png")
+        case .lover:
+            return .init(named: "lover.png")
+        case .commissar, .patrol:
+            return .init(named: "commissar.png")
+        case .bloodhound:
+            return .init(named: "loupe.png")
+        }
+    }
+    
     var title: String {
         switch self {
         case .civ:
@@ -37,6 +58,31 @@ enum SessionRoleId: String, CaseIterable {
             return "Ищейка"
         case .lover:
             return "Любовница"
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .civ:
+            return "Просыпается днем и ищет мафию"
+        case .maf:
+            return "Просыпается ночью и выбирает жертву"
+        case .wolf:
+            return "Превращается в мафию после исключения первой мафии, до этого мирный"
+        case .boss:
+            return "Просыпается ночью и ищет комиссара"
+        case .medic:
+            return "Просыпается ночью и лечит любого игрока, лечить дважды одного и того же нельзя"
+        case .commissar:
+            return "Просыпается ночью и ищет мафию"
+        case .patrol:
+            return "Превращается в комиссара после его выхода из игры"
+        case .maniac:
+            return "Просыпается ночью и выбирает жертву"
+        case .bloodhound:
+            return "Просыпается ночью и ищет маньяка"
+        case .lover:
+            return "Просыпается ночью и забирает любого игрока на ночь, который позже не голосует, а также его нельзя убить ночью. Забирать дважды одного и того же нельзя"
         }
     }
 }

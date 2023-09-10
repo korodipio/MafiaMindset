@@ -99,7 +99,7 @@ class EditableTableViewCell: UITableViewCell {
     private func didChangeIsValid() {
         UIView.animate(withDuration: 0.1) {
             self.layer.shadowOpacity = self.isValid ? 0.3 : 0.0
-            self.layer.shadowColor = self.isError ? UIColor.red.cgColor : UIColor(named: "PrimaryColor")?.cgColor
+            self.layer.shadowColor = self.isError ? UIColor.red.cgColor : UIColor.primary?.cgColor
         }
     }
 

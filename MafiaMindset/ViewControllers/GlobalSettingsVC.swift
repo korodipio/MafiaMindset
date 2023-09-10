@@ -65,6 +65,37 @@ class GlobalSettingsVC: UIViewController {
             """
         cells.append(discussionOrderCell)
         
+        let roleSelectionTypeCell = VariantsTableViewCell(variants: [
+            .init(id: RoleSelectionType.playerSelection.rawValue, title: RoleSelectionType.playerSelection.title),
+            .init(id: RoleSelectionType.masterSelection.rawValue, title: RoleSelectionType.masterSelection.title),
+            .init(id: RoleSelectionType.ask.rawValue, title: RoleSelectionType.ask.title)
+        ], defaultVariantIndex: GlobalSettings.shared.roleSelectionType == .playerSelection ? 0 : (GlobalSettings.shared.roleSelectionType == .masterSelection ? 1 : 2) , onComplete: { [weak self] variant in
+            guard let type = RoleSelectionType(rawValue: variant.id) else { return }
+            guard let self else { return }
+            self.settings.roleSelectionType = type
+        })
+        roleSelectionTypeCell.title = "Выбор роли"
+        roleSelectionTypeCell.helpDescription = """
+            Игрок: Игрок выбирает карту из колоды в приложении\n
+            Ведущий: Ведущий задает роль\n
+            Индивидуально: Для каждого игрока будет возможно либо задать роль либо предоставить выбор ему
+            """
+        cells.append(roleSelectionTypeCell)
+        
+        let firstDayDiscussionTypeCell = VariantsTableViewCell(variants: [
+            .init(id: FirstDayDiscussionType.globalDiscussion.rawValue, title: FirstDayDiscussionType.globalDiscussion.title),
+            .init(id: FirstDayDiscussionType.playerDiscussion.rawValue, title: FirstDayDiscussionType.playerDiscussion.title)
+        ], defaultVariantIndex: GlobalSettings.shared.firstDayDiscussionType == .globalDiscussion ? 0 : 1 , onComplete: { [weak self] variant in
+            guard let type = FirstDayDiscussionType(rawValue: variant.id) else { return }
+            guard let self else { return }
+            self.settings.firstDayDiscussionType = type
+        })
+        firstDayDiscussionTypeCell.title = "Первый день"
+        firstDayDiscussionTypeCell.helpDescription = """
+            Происходит либо общее обсуждение, либо обсуждение каждого игрока отдельно
+            """
+        cells.append(firstDayDiscussionTypeCell)
+        
         let globalDiscussionSecondsCell = IntTableViewCell()
         globalDiscussionSecondsCell.title = "Минут общей дискуссии"
         globalDiscussionSecondsCell.onUpdate = { [weak globalDiscussionSecondsCell, weak self] _ in
@@ -75,7 +106,7 @@ class GlobalSettingsVC: UIViewController {
         globalDiscussionSecondsCell.maxValue = 5
         globalDiscussionSecondsCell.intValue = Int(settings.globalDiscussionSeconds) / 60
         cells.append(globalDiscussionSecondsCell)
-     
+        
         let playerDiscussionSecondsCell = IntTableViewCell()
         playerDiscussionSecondsCell.title = "Секунд дискуссии игрока"
         playerDiscussionSecondsCell.onUpdate = { [weak playerDiscussionSecondsCell, weak self] _ in
@@ -86,7 +117,7 @@ class GlobalSettingsVC: UIViewController {
         playerDiscussionSecondsCell.maxValue = 120
         playerDiscussionSecondsCell.intValue = Int(settings.playerDiscussionSeconds)
         cells.append(playerDiscussionSecondsCell)
-
+        
         let votedPlayerDiscussionSecondsCell = IntTableViewCell()
         votedPlayerDiscussionSecondsCell.title = "Секунд оправдания игрока"
         votedPlayerDiscussionSecondsCell.onUpdate = { [weak votedPlayerDiscussionSecondsCell, weak self] _ in

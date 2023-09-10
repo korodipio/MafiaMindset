@@ -104,8 +104,6 @@ class RootVC: UIViewController {
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .label
-        //
-        //        navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "plus"), style: .done, target: self, action: #selector(didTapCreateSessionButton))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: .init(systemName: "slider.vertical.3"), style: .done, target: self, action: #selector(didTapConfigureButton))
         
         tableView.dataSource = self
@@ -135,21 +133,23 @@ class RootVC: UIViewController {
     }
     
     @objc private func didTapCreateSessionButton() {
-        //        let model = SessionModel()
+        let model = SessionModel()
         //        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
         //        model.deadPlayers = [4, 6, 0]
-        //        model.mafCount = 1
-        //        model.bossCount = 1
-        //        model.civCount = 2
-        //        model.wolfCount = 1
-        //        model.bloodhoundCount = 1
-        //        model.maniacCount = 1
-        //        model.medicCount = 1
-        //        model.commissarCount = 1
-        //        model.patrolCount = 1
-        //        model.dayNightCycleType = .day
+        model.mafCount = 1
+        model.bossCount = 1
+        model.civCount = 2
+        model.wolfCount = 1
+        model.bloodhoundCount = 1
+        model.maniacCount = 1
+        model.medicCount = 1
+        model.commissarCount = 1
+        model.patrolCount = 1
+        model.dayNightCycleType = .day
         
-        //        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
+        //        createSessionWith(model)
+        
+        //                let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
         
         let vc = CreateSessionVC { [weak self] model in
             self?.createSessionWith(model)
@@ -175,8 +175,16 @@ class RootVC: UIViewController {
     }
     
     private func startFirstDay(_ model: SessionModel) {
-        let vc = FirstDayVC { [weak self] () in
-            self?.startDayNight(model)
+        var vc: UIViewController!
+        if GlobalSettings.shared.firstDayDiscussionType == .globalDiscussion {
+            vc = PlayersDiscussionVC(canInitiateVote: false, model: model, dayModel: nil, onComplete: { [weak self] () in
+                self?.startDayNight(model)
+            })
+        }
+        else {
+            vc = FirstDayVC { [weak self] () in
+                self?.startDayNight(model)
+            }
         }
         navigationController?.setViewControllers([self, vc], animated: true)
     }

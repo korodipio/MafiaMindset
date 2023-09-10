@@ -12,7 +12,9 @@ class BoolTableViewCell: EditableTableViewCell {
     var isChecked = false {
         didSet {
             self.isValid = isChecked
-            self.contentImage.alpha = isChecked ? 1 : 0
+            UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) {
+                self.contentImage.alpha = self.isChecked ? 1 : 0
+            }
             self.onUpdate?(self)
         }
     }

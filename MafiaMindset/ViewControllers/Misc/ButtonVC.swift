@@ -9,6 +9,11 @@ import UIKit
 
 class ButtonVC: UIViewController {
 
+    var isVisible: Bool = true {
+        didSet {
+            didChangeIsVisible()
+        }
+    }
     var isEnabled: Bool {
         get { button.isEnabled }
         set { button.isEnabled = newValue }
@@ -103,6 +108,24 @@ class ButtonVC: UIViewController {
         else {
             if gradientLayer.superlayer != nil {
                 gradientLayer.removeFromSuperlayer()
+            }
+        }
+    }
+    
+    private func didChangeIsVisible() {
+        if isVisible {
+            button.isHidden = false
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0) {
+                self.button.transform = .identity
+                self.button.alpha = 1
+            }
+        }
+        else {
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0) {
+                self.button.transform = .init(translationX: 0, y: self.button.bounds.height)
+                self.button.alpha = 0
+            } completion: { _ in
+                self.button.isHidden = true
             }
         }
     }

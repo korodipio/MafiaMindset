@@ -12,7 +12,7 @@ class StorageSessionViewModel {
     
     init() {
         realm = try! Realm(configuration: Realm.Configuration(
-            schemaVersion: 6))
+            schemaVersion: 8))
     }
     
     private func getDaysFromStorage(_ sm: StorageSessionModel) -> [DayModel] {

@@ -9,6 +9,18 @@
 /* Begin PBXBuildFile section */
 		9703997E2A8BB07300E51F78 /* lottie_win.json in Resources */ = {isa = PBXBuildFile; fileRef = 9703997D2A8BB07300E51F78 /* lottie_win.json */; };
 		970399802A8CB56B00E51F78 /* ConfigureSessionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9703997F2A8CB56B00E51F78 /* ConfigureSessionVC.swift */; };
+		972C24F62AADB30D00700459 /* CardSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C24F52AADB30D00700459 /* CardSelectionVC.swift */; };
+		972C24F82AADB33700700459 /* RotatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C24F72AADB33700700459 /* RotatingView.swift */; };
+		972C24FA2AADDBC500700459 /* RotatingRoleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C24F92AADDBC500700459 /* RotatingRoleCell.swift */; };
+		972C24FC2AADE6AB00700459 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C24FB2AADE6AB00700459 /* CGPoint+Extension.swift */; };
+		972C25042AADF71E00700459 /* lover.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C24FD2AADF71C00700459 /* lover.png */; };
+		972C25052AADF71E00700459 /* maniac.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C24FE2AADF71C00700459 /* maniac.png */; };
+		972C25062AADF71E00700459 /* wolf.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C24FF2AADF71D00700459 /* wolf.png */; };
+		972C25072AADF71E00700459 /* medic.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25002AADF71D00700459 /* medic.png */; };
+		972C25082AADF71E00700459 /* commissar.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25012AADF71D00700459 /* commissar.png */; };
+		972C25092AADF71E00700459 /* mafia.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25022AADF71E00700459 /* mafia.png */; };
+		972C250A2AADF71E00700459 /* civilian.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25032AADF71E00700459 /* civilian.png */; };
+		972C250C2AADF8D600700459 /* loupe.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C250B2AADF8D600700459 /* loupe.png */; };
 		973AE5162A841A10005F13F8 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973AE5152A841A10005F13F8 /* UIViewController+Extension.swift */; };
 		973AE5182A841A1C005F13F8 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973AE5172A841A1C005F13F8 /* UIColor+Extension.swift */; };
 		973AE51A2A841A26005F13F8 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973AE5192A841A26005F13F8 /* UIView+Extension.swift */; };
@@ -74,6 +86,18 @@
 		653CA5658E9804154FAAE99F /* Pods-MafiaMindset.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MafiaMindset.debug.xcconfig"; path = "Target Support Files/Pods-MafiaMindset/Pods-MafiaMindset.debug.xcconfig"; sourceTree = "<group>"; };
 		9703997D2A8BB07300E51F78 /* lottie_win.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lottie_win.json; sourceTree = "<group>"; };
 		9703997F2A8CB56B00E51F78 /* ConfigureSessionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSessionVC.swift; sourceTree = "<group>"; };
+		972C24F52AADB30D00700459 /* CardSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSelectionVC.swift; sourceTree = "<group>"; };
+		972C24F72AADB33700700459 /* RotatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingView.swift; sourceTree = "<group>"; };
+		972C24F92AADDBC500700459 /* RotatingRoleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingRoleCell.swift; sourceTree = "<group>"; };
+		972C24FB2AADE6AB00700459 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
+		972C24FD2AADF71C00700459 /* lover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lover.png; sourceTree = "<group>"; };
+		972C24FE2AADF71C00700459 /* maniac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = maniac.png; sourceTree = "<group>"; };
+		972C24FF2AADF71D00700459 /* wolf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wolf.png; sourceTree = "<group>"; };
+		972C25002AADF71D00700459 /* medic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = medic.png; sourceTree = "<group>"; };
+		972C25012AADF71D00700459 /* commissar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commissar.png; sourceTree = "<group>"; };
+		972C25022AADF71E00700459 /* mafia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mafia.png; sourceTree = "<group>"; };
+		972C25032AADF71E00700459 /* civilian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = civilian.png; sourceTree = "<group>"; };
+		972C250B2AADF8D600700459 /* loupe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loupe.png; sourceTree = "<group>"; };
 		973AE5152A841A10005F13F8 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		973AE5172A841A1C005F13F8 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		973AE5192A841A26005F13F8 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -199,6 +223,7 @@
 				973AE5212A841A64005F13F8 /* Collection+Extension.swift */,
 				973AE5232A841A83005F13F8 /* UIResponder+Extension.swift */,
 				97E563A42A8E6D35000281F4 /* Array+Extension.swift */,
+				972C24FB2AADE6AB00700459 /* CGPoint+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -214,6 +239,7 @@
 				97B8B0B12A9B85720053CADA /* VariantsTableViewCell.swift */,
 				97AEB66A2A9F68AD00464742 /* GenericTableViewCell.swift */,
 				97AEB66C2A9F6AA700464742 /* DetailedSessionTableViewCell.swift */,
+				972C24F92AADDBC500700459 /* RotatingRoleCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -223,6 +249,7 @@
 			children = (
 				973AE52D2A843321005F13F8 /* NumericTextField.swift */,
 				978884732A8A37A300953C4A /* TouchTransparentVC.swift */,
+				972C24F72AADB33700700459 /* RotatingView.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -231,6 +258,7 @@
 			isa = PBXGroup;
 			children = (
 				978884712A8A379700953C4A /* ButtonVC.swift */,
+				972C24F52AADB30D00700459 /* CardSelectionVC.swift */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -238,6 +266,14 @@
 		97E563A12A8E2571000281F4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				972C250B2AADF8D600700459 /* loupe.png */,
+				972C25012AADF71D00700459 /* commissar.png */,
+				972C25032AADF71E00700459 /* civilian.png */,
+				972C25022AADF71E00700459 /* mafia.png */,
+				972C24FE2AADF71C00700459 /* maniac.png */,
+				972C24FD2AADF71C00700459 /* lover.png */,
+				972C25002AADF71D00700459 /* medic.png */,
+				972C24FF2AADF71D00700459 /* wolf.png */,
 				979BFD682A95230C004F3613 /* app-icon.png */,
 			);
 			path = Images;
@@ -426,8 +462,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				97E5FCD22A84132100E8BB0C /* LaunchScreen.storyboard in Resources */,
+				972C25052AADF71E00700459 /* maniac.png in Resources */,
+				972C250A2AADF71E00700459 /* civilian.png in Resources */,
+				972C25072AADF71E00700459 /* medic.png in Resources */,
+				972C25092AADF71E00700459 /* mafia.png in Resources */,
 				9703997E2A8BB07300E51F78 /* lottie_win.json in Resources */,
+				972C25062AADF71E00700459 /* wolf.png in Resources */,
+				972C250C2AADF8D600700459 /* loupe.png in Resources */,
+				972C25042AADF71E00700459 /* lover.png in Resources */,
 				97E5FCCF2A84132100E8BB0C /* Assets.xcassets in Resources */,
+				972C25082AADF71E00700459 /* commissar.png in Resources */,
 				979BFD692A95230C004F3613 /* app-icon.png in Resources */,
 				97E5FCCD2A84131F00E8BB0C /* RootVC.storyboard in Resources */,
 			);
@@ -484,6 +528,7 @@
 			files = (
 				978884552A8646B200953C4A /* TimerView.swift in Sources */,
 				97E563AF2A8FD732000281F4 /* SessionTransitionManager.swift in Sources */,
+				972C24F62AADB30D00700459 /* CardSelectionVC.swift in Sources */,
 				97E563AD2A8FBE51000281F4 /* SessionView.swift in Sources */,
 				9788845F2A879D4A00953C4A /* NightVC.swift in Sources */,
 				9788846B2A89401200953C4A /* VotedPlayersDiscussionVC.swift in Sources */,
@@ -492,6 +537,8 @@
 				97E563A72A8F4C74000281F4 /* LastDiscussionVC.swift in Sources */,
 				973AE5302A84F00B005F13F8 /* Models.swift in Sources */,
 				97E5FCCA2A84131F00E8BB0C /* RootVC.swift in Sources */,
+				972C24FA2AADDBC500700459 /* RotatingRoleCell.swift in Sources */,
+				972C24FC2AADE6AB00700459 /* CGPoint+Extension.swift in Sources */,
 				973AE5242A841A83005F13F8 /* UIResponder+Extension.swift in Sources */,
 				978884512A85168C00953C4A /* FirstNightVC.swift in Sources */,
 				973AE5292A8426BF005F13F8 /* IntTableViewCell.swift in Sources */,
@@ -531,6 +578,7 @@
 				973AE52E2A843321005F13F8 /* NumericTextField.swift in Sources */,
 				978884632A890D6F00953C4A /* WinnerVC.swift in Sources */,
 				973AE5322A8500F5005F13F8 /* CardAssignmentVC.swift in Sources */,
+				972C24F82AADB33700700459 /* RotatingView.swift in Sources */,
 				973AE5182A841A1C005F13F8 /* UIColor+Extension.swift in Sources */,
 				97B8B0AC2A9B74AD0053CADA /* GlobalSettings.swift in Sources */,
 				97E563A52A8E6D35000281F4 /* Array+Extension.swift in Sources */,
@@ -688,7 +736,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -725,7 +773,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

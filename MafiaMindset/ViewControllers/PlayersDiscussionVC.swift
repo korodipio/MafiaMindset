@@ -9,8 +9,9 @@ import UIKit
 
 class PlayersDiscussionVC: UIViewController {
     
+    let canInitiateVote: Bool
     private let model: SessionModel
-    private let dayModel: DayModel
+    private let dayModel: DayModel!
     private let onComplete: () -> Void
     private let timerView = TimerView()
     private var players: [Int] = []
@@ -21,9 +22,11 @@ class PlayersDiscussionVC: UIViewController {
         return model.isAlive(role: .lover) ? model.nights.last?.lover : nil
     }
     
-    init(model: SessionModel, dayModel: DayModel, onComplete: @escaping () -> Void) {
+    init(canInitiateVote: Bool, model: SessionModel, dayModel: DayModel? = nil, onComplete: @escaping () -> Void) {
+        assert(!canInitiateVote || (canInitiateVote && dayModel != nil), "dayModel must be initiated if vote initiation is allowed")
+        self.canInitiateVote = canInitiateVote
         self.model = model
-        self.dayModel = dayModel
+        self.dayModel = canInitiateVote ? dayModel! : nil
         self.onComplete = onComplete
         super.init(nibName: nil, bundle: nil)
     }
@@ -50,7 +53,7 @@ class PlayersDiscussionVC: UIViewController {
             }
             return v
         }.sorted().shifted(by: model.days.count)
-        title = "Выдвижение. Игрок \((players.first ?? 0) + 1)"
+        prepare()
         
         view.addSubview(timerView)
         timerView.constraintToParent()
@@ -71,15 +74,33 @@ class PlayersDiscussionVC: UIViewController {
     }
     
     @objc private func didTapDoneButton() {
-        handle {
-            guard self.currentPlayerIndex < self.players.count - 1 else {
-                self.onComplete()
+        func next() {
+            guard currentPlayerIndex < players.count - 1 else {
+                onComplete()
                 return
             }
             
-            self.currentPlayerIndex += 1
-            self.timerView.reset(seconds: GlobalSettings.shared.playerDiscussionSeconds)
-            self.title = "Выдвижение. Игрок \(self.players[self.currentPlayerIndex] + 1)"
+            currentPlayerIndex += 1
+            prepare()
+        }
+        
+        if canInitiateVote {
+            handle {
+                next()
+            }
+        }
+        else {
+            next()
+        }
+    }
+    
+    private func prepare() {
+        timerView.reset(seconds: GlobalSettings.shared.playerDiscussionSeconds)
+        if canInitiateVote {
+            title = "Выдвижение. Игрок \(self.players[self.currentPlayerIndex] + 1)"
+        }
+        else {
+            title = "Обсуждение. Игрок \(self.players[self.currentPlayerIndex] + 1)"
         }
     }
     

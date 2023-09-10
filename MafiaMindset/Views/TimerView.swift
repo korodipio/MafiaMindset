@@ -40,6 +40,7 @@ class TimerView: UIView {
             didChangeState()
         }
     }
+    private var isNegative = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -147,6 +148,7 @@ class TimerView: UIView {
     }
     
     @objc private func didTapMinusButton() {
+        guard self.seconds > 0 else { return }
         self.seconds -= min(15, self.seconds)
     }
     
@@ -161,12 +163,12 @@ class TimerView: UIView {
             let current = Date.now.timeIntervalSince1970
             let delta = current - initInterval
             initInterval = current
-            self.seconds -= min(delta, self.seconds)
+            self.seconds -= delta//min(delta, self.seconds)
             if self.seconds == 0 {
                 if self.vibroFeedback && !GlobalSettings.shared.disableVibration {
                     self.playHapticPattern()
                 }
-                self.stop()
+//                self.stop()
             }
         }
         RunLoop.main.add(timer, forMode: .common)
@@ -222,7 +224,22 @@ class TimerView: UIView {
     }
     
     private func didChangeSeconds(oldValue: TimeInterval) {
-        let str = String(format: "%.f", self.seconds)
+        if !self.isNegative && seconds < 0 {
+            self.isNegative = true
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0) {
+                self.timerLabel.textColor = .systemRed
+                self.timerLabel.transform = .init(scaleX: 1.2, y: 1.2)
+            }
+        }
+        else if self.isNegative && seconds > 0 {
+            self.isNegative = false
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.3, initialSpringVelocity: 0) {
+                self.timerLabel.textColor = .label
+                self.timerLabel.transform = .identity
+            }
+        }
+        
+        let str = String(format: "%.f", abs(self.seconds))
         if str != timerLabel.text && self.seconds >= 0 && self.seconds <= 3 {
             if !GlobalSettings.shared.disableVibration {
                 feedback.impactOccurred()

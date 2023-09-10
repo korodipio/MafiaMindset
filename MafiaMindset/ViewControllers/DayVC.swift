@@ -125,7 +125,7 @@ class DayVC: UIViewController {
             pushViewController(vc)
             
         case .playersDiscussion:
-            let vc = PlayersDiscussionVC(model: model, dayModel: dayModel, onComplete: { [weak self] () in
+            let vc = PlayersDiscussionVC(canInitiateVote: true, model: model, dayModel: dayModel, onComplete: { [weak self] () in
                 guard let self else { return }
                 if self.dayModel.votedPlayers.count <= 1 {
                     

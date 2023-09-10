@@ -22,7 +22,9 @@ class IntTableViewCell: EditableTableViewCell {
     var content: String? {
         get { contentLabel.text }
         set {
-            contentLabel.text = newValue
+            UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) {
+                self.contentLabel.text = newValue
+            }
             self.onUpdate?(self)
         }
     }

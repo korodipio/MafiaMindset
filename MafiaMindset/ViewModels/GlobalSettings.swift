@@ -23,6 +23,37 @@ enum DiscussionOrder: String {
     }
 }
 
+enum FirstDayDiscussionType: String {
+    case playerDiscussion
+    case globalDiscussion
+    
+    var title: String {
+        switch self {
+        case .playerDiscussion:
+            return "Общая дискуссия"
+        case .globalDiscussion:
+            return "Дискуссия игроков"
+        }
+    }
+}
+
+enum RoleSelectionType: String {
+    case playerSelection
+    case masterSelection
+    case ask
+    
+    var title: String {
+        switch self {
+        case .playerSelection:
+            return "Игрок"
+        case .masterSelection:
+            return "Ведущий"
+        case .ask:
+            return "Индивидуально"
+        }
+    }
+}
+
 class GlobalSettings {
     static var shared: GlobalSettings {
         GlobalSettings.loadGlobalSettings
@@ -33,16 +64,20 @@ class GlobalSettings {
     var votedPlayerDiscussionSeconds: TimeInterval = 30
     var kickedPlayerDiscussionSeconds: TimeInterval = 60
     var discussionOrder: DiscussionOrder = .globalDiscussionThenPlayer
+    var firstDayDiscussionType: FirstDayDiscussionType = .globalDiscussion
+    var roleSelectionType: RoleSelectionType = .playerSelection
     var unusedVotesToLastPlayer: Bool = true
     var disableVibration = false
     
     static var loadGlobalSettings: GlobalSettings {
         let r = GlobalSettings()
         let config = Realm.Configuration(
-            schemaVersion: 2)
+            schemaVersion: 4)
         guard let realm = try? Realm(configuration: config) else { return r }
         guard let stored = realm.objects(StorageGlobalSettings.self).first else { return r }
         
+        r.roleSelectionType = RoleSelectionType(rawValue: stored.roleSelectionType) ?? r.roleSelectionType
+        r.firstDayDiscussionType = FirstDayDiscussionType(rawValue: stored.firstDayDiscussionType) ?? r.firstDayDiscussionType
         r.disableVibration = stored.disableVibration
         r.unusedVotesToLastPlayer = stored.unusedVotesToLastPlayer
         r.discussionOrder = DiscussionOrder(rawValue: stored.discussionOrder) ?? r.discussionOrder
@@ -57,6 +92,8 @@ class GlobalSettings {
     func copy() -> GlobalSettings {
         let r = GlobalSettings()
         
+        r.roleSelectionType = roleSelectionType
+        r.firstDayDiscussionType = firstDayDiscussionType
         r.disableVibration = disableVibration
         r.unusedVotesToLastPlayer = unusedVotesToLastPlayer
         r.discussionOrder = discussionOrder
@@ -87,12 +124,16 @@ class StorageGlobalSettings: Object {
     @Persisted var votedPlayerDiscussionSeconds: TimeInterval = 30
     @Persisted var kickedPlayerDiscussionSeconds: TimeInterval = 60
     @Persisted var discussionOrder: String = DiscussionOrder.globalDiscussionThenPlayer.rawValue
+    @Persisted var firstDayDiscussionType: String = FirstDayDiscussionType.globalDiscussion.rawValue
+    @Persisted var roleSelectionType: String = RoleSelectionType.playerSelection.rawValue
     @Persisted var unusedVotesToLastPlayer: Bool = true
     @Persisted var disableVibration = false
     
     static func fromGlobalSettings(_ gs: GlobalSettings) -> StorageGlobalSettings {
         let r = StorageGlobalSettings()
         
+        r.roleSelectionType = gs.roleSelectionType.rawValue
+        r.firstDayDiscussionType = gs.firstDayDiscussionType.rawValue
         r.globalDiscussionSeconds = gs.globalDiscussionSeconds
         r.playerDiscussionSeconds = gs.playerDiscussionSeconds
         r.votedPlayerDiscussionSeconds = gs.votedPlayerDiscussionSeconds

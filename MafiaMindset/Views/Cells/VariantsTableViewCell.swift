@@ -46,7 +46,9 @@ class VariantsTableViewCell: EditableTableViewCell {
     
     private func updateVariant() {
         if let variant = variants[safe: defaultVariantIndex] {
-            contentLabel.text = variant.title
+            UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve]) {
+                self.contentLabel.text = variant.title
+            }
         }
     }
     

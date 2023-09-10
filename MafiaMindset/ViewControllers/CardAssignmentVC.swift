@@ -9,7 +9,7 @@ import UIKit
 import LTMorphingLabel
 
 class CardAssignmentVC: UIViewController {
-
+    
     private let onComplete: (SessionModel) -> Void
     private let model: SessionModel
     private let selectedRolesModel: SessionModel?
@@ -40,7 +40,7 @@ class CardAssignmentVC: UIViewController {
     }
     
     private func setupUi() {
-        title = "Раздача ролей"
+        title = "Раздача карт"
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
         
@@ -69,7 +69,7 @@ class CardAssignmentVC: UIViewController {
         })
         add(buttonVC)
         buttonVC.buttonTitle = "Задать роль"
-
+        
         currentPlayerIndex = Int.random(in: 0..<model.totalCount)
     }
     
@@ -131,24 +131,55 @@ class CardAssignmentVC: UIViewController {
         present(vc, animated: true)
     }
     
-    @objc private func didTapAssignButton() {
-        let vc = UIAlertController(title: "Выбери нужную роль", message: nil, preferredStyle: .alert)
+    private func presentAlert(title: String?, message: String?, _ buttons: [UIAlertAction]) {
+        let vc = UIAlertController(title: title, message: message, preferredStyle: .alert)
         vc.view.tintColor = .label
-        
-        availableRoles().sorted { v1, v2 in
-            v1.key.title < v2.key.title
-        }.forEach { (role: SessionRoleId, count: Int) in
-            let roleAction = UIAlertAction(title: "\(role.title) - \(count)", style: .default) { _ in
-                self.showConfirmation(player: self.currentPlayerIndex, role: role) {
-                    self.assignRoleToPlayer(with: self.currentPlayerIndex, role: role)
-                }
-            }
-            vc.addAction(roleAction)
+        buttons.forEach { button in
+            vc.addAction(button)
         }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-        vc.addAction(cancelAction)
-        
         present(vc, animated: true)
+    }
+    
+    @objc private func didTapAssignButton() {
+        func cardSelection() {
+            let cardSelectionVC = CardSelectionVC(roles: availableRoles().flatMap { (role: SessionRoleId, count: Int) in
+                return Array(repeating: role, count: count)
+            }.shuffled())  { [weak self] role in
+                guard let self else { return }
+                assignRoleToPlayer(with: currentPlayerIndex, role: role)
+            }
+            navigationController?.pushViewController(cardSelectionVC, animated: true)
+        }
+        func cardAssignment() {
+            var buttons = availableRoles().sorted { v1, v2 in
+                v1.key.title < v2.key.title
+            }.compactMap { (role: SessionRoleId, count: Int) in
+                let roleAction = UIAlertAction(title: "\(role.title) - \(count)", style: .default) { _ in
+                    self.showConfirmation(player: self.currentPlayerIndex, role: role) {
+                        self.assignRoleToPlayer(with: self.currentPlayerIndex, role: role)
+                    }
+                }
+                return roleAction
+            }
+            buttons.append(UIAlertAction(title: "Отмена", style: .cancel))
+            presentAlert(title: "Выбери нужную роль", message: nil, buttons)
+        }
+        
+        switch GlobalSettings.shared.roleSelectionType {
+        case .playerSelection:
+            cardSelection()
+        case .masterSelection:
+            cardAssignment()
+        case .ask:
+            presentAlert(title: "Позволить игроку выбрать или задать роль?", message: nil, [
+                .init(title: "Игрок выберет карту", style: .default, handler: { _ in
+                    cardSelection()
+                }),
+                .init(title: "Задать роль", style: .default, handler: { _ in
+                    cardAssignment()
+                })
+            ])
+        }
     }
     
     // Decreases role count and returns total count of roles

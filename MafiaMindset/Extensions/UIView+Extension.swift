@@ -23,6 +23,15 @@ extension UIView {
             self.bottomAnchor.constraint(equalTo: self.superview!.bottomAnchor, constant: -inset)
         ])
     }
+    func constraintToParentSafeArea() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.leadingAnchor.constraint(equalTo: self.superview!.safeAreaLayoutGuide.leadingAnchor),
+            self.topAnchor.constraint(equalTo: self.superview!.safeAreaLayoutGuide.topAnchor),
+            self.trailingAnchor.constraint(equalTo: self.superview!.safeAreaLayoutGuide.trailingAnchor),
+            self.bottomAnchor.constraint(equalTo: self.superview!.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
     func constraintToParentMargin() {
         self.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
