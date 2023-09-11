@@ -147,8 +147,8 @@ class RootVC: UIViewController {
         model.patrolCount = 1
         model.dayNightCycleType = .day
         
-        //        createSessionWith(model)
-        
+                createSessionWith(model)
+        return
         //                let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
         
         let vc = CreateSessionVC { [weak self] model in

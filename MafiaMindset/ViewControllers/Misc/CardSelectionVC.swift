@@ -41,11 +41,12 @@ class CardSelectionVC: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { sec, _ in
-            
+  
             let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
-            item.contentInsets = .init(top: 0, leading: 30, bottom: 0, trailing: 30)
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)), subitems: [item])
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.7), heightDimension: .fractionalHeight(1)), subitems: [item])
             let section = NSCollectionLayoutSection(group: group)
+            let spacing = UIScreen.main.bounds.width * 0.3 / 2
+            section.contentInsets = .init(top: 0, leading: spacing, bottom: 0, trailing: spacing)
             section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
             section.visibleItemsInvalidationHandler = { [weak self] items, offset, environment in
                 guard let self else { return }
@@ -96,7 +97,7 @@ class CardSelectionVC: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(RotatingRoleCell.self, forCellWithReuseIdentifier: RotatingRoleCell.identifier)
-        
+
         wrapper.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(wrapper)
         NSLayoutConstraint.activate([
@@ -178,7 +179,7 @@ extension CardSelectionVC: UICollectionViewDelegate, UICollectionViewDataSource 
         guard let cell = cell as? RotatingRoleCell else { return }
         cell.reset()
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RotatingRoleCell.identifier, for: indexPath) as! RotatingRoleCell
         

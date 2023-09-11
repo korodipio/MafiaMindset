@@ -101,17 +101,18 @@ class RotatingRoleCell: UICollectionViewCell {
         
         titleLabel.textAlignment = .center
         titleLabel.font = .rounded(ofSize: 20, weight: .medium)
-        titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         roleStackView.addArrangedSubview(titleLabel)
         
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .label
-        imageView.transform = .init(scaleX: 0.7, y: 0.7)
+        imageView.transform = .init(scaleX: 0.8, y: 0.8)
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        imageView.setContentHuggingPriority(.defaultHigh, for: .vertical)
         roleStackView.addArrangedSubview(imageView)
         
-        descriptionLabel.font = .rounded(ofSize: 16, weight: .regular)
+        descriptionLabel.font = .rounded(ofSize: 14, weight: .medium)
         descriptionLabel.textAlignment = .center
-        descriptionLabel.alpha = 0.8
+        descriptionLabel.alpha = 0.7
         descriptionLabel.numberOfLines = 0
         roleStackView.addArrangedSubview(descriptionLabel)
     }

@@ -13,14 +13,14 @@
 		972C24F82AADB33700700459 /* RotatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C24F72AADB33700700459 /* RotatingView.swift */; };
 		972C24FA2AADDBC500700459 /* RotatingRoleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C24F92AADDBC500700459 /* RotatingRoleCell.swift */; };
 		972C24FC2AADE6AB00700459 /* CGPoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C24FB2AADE6AB00700459 /* CGPoint+Extension.swift */; };
-		972C25042AADF71E00700459 /* lover.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C24FD2AADF71C00700459 /* lover.png */; };
-		972C25052AADF71E00700459 /* maniac.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C24FE2AADF71C00700459 /* maniac.png */; };
-		972C25062AADF71E00700459 /* wolf.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C24FF2AADF71D00700459 /* wolf.png */; };
-		972C25072AADF71E00700459 /* medic.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25002AADF71D00700459 /* medic.png */; };
-		972C25082AADF71E00700459 /* commissar.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25012AADF71D00700459 /* commissar.png */; };
-		972C25092AADF71E00700459 /* mafia.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25022AADF71E00700459 /* mafia.png */; };
-		972C250A2AADF71E00700459 /* civilian.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25032AADF71E00700459 /* civilian.png */; };
-		972C250C2AADF8D600700459 /* loupe.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C250B2AADF8D600700459 /* loupe.png */; };
+		972C25472AAF7C7D00700459 /* mafia.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C253E2AAF7C7D00700459 /* mafia.png */; };
+		972C25482AAF7C7D00700459 /* wolf.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C253F2AAF7C7D00700459 /* wolf.png */; };
+		972C25492AAF7C7D00700459 /* commissar.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25402AAF7C7D00700459 /* commissar.png */; };
+		972C254A2AAF7C7D00700459 /* civilian.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25412AAF7C7D00700459 /* civilian.png */; };
+		972C254B2AAF7C7D00700459 /* lover.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25422AAF7C7D00700459 /* lover.png */; };
+		972C254C2AAF7C7D00700459 /* maniac.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25432AAF7C7D00700459 /* maniac.png */; };
+		972C254D2AAF7C7D00700459 /* loupe.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25442AAF7C7D00700459 /* loupe.png */; };
+		972C254E2AAF7C7D00700459 /* medic.png in Resources */ = {isa = PBXBuildFile; fileRef = 972C25452AAF7C7D00700459 /* medic.png */; };
 		973AE5162A841A10005F13F8 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973AE5152A841A10005F13F8 /* UIViewController+Extension.swift */; };
 		973AE5182A841A1C005F13F8 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973AE5172A841A1C005F13F8 /* UIColor+Extension.swift */; };
 		973AE51A2A841A26005F13F8 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973AE5192A841A26005F13F8 /* UIView+Extension.swift */; };
@@ -90,14 +90,14 @@
 		972C24F72AADB33700700459 /* RotatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingView.swift; sourceTree = "<group>"; };
 		972C24F92AADDBC500700459 /* RotatingRoleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotatingRoleCell.swift; sourceTree = "<group>"; };
 		972C24FB2AADE6AB00700459 /* CGPoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extension.swift"; sourceTree = "<group>"; };
-		972C24FD2AADF71C00700459 /* lover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lover.png; sourceTree = "<group>"; };
-		972C24FE2AADF71C00700459 /* maniac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = maniac.png; sourceTree = "<group>"; };
-		972C24FF2AADF71D00700459 /* wolf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wolf.png; sourceTree = "<group>"; };
-		972C25002AADF71D00700459 /* medic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = medic.png; sourceTree = "<group>"; };
-		972C25012AADF71D00700459 /* commissar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commissar.png; sourceTree = "<group>"; };
-		972C25022AADF71E00700459 /* mafia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mafia.png; sourceTree = "<group>"; };
-		972C25032AADF71E00700459 /* civilian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = civilian.png; sourceTree = "<group>"; };
-		972C250B2AADF8D600700459 /* loupe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loupe.png; sourceTree = "<group>"; };
+		972C253E2AAF7C7D00700459 /* mafia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mafia.png; sourceTree = "<group>"; };
+		972C253F2AAF7C7D00700459 /* wolf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wolf.png; sourceTree = "<group>"; };
+		972C25402AAF7C7D00700459 /* commissar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commissar.png; sourceTree = "<group>"; };
+		972C25412AAF7C7D00700459 /* civilian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = civilian.png; sourceTree = "<group>"; };
+		972C25422AAF7C7D00700459 /* lover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lover.png; sourceTree = "<group>"; };
+		972C25432AAF7C7D00700459 /* maniac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = maniac.png; sourceTree = "<group>"; };
+		972C25442AAF7C7D00700459 /* loupe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loupe.png; sourceTree = "<group>"; };
+		972C25452AAF7C7D00700459 /* medic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = medic.png; sourceTree = "<group>"; };
 		973AE5152A841A10005F13F8 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		973AE5172A841A1C005F13F8 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		973AE5192A841A26005F13F8 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -266,14 +266,14 @@
 		97E563A12A8E2571000281F4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				972C250B2AADF8D600700459 /* loupe.png */,
-				972C25012AADF71D00700459 /* commissar.png */,
-				972C25032AADF71E00700459 /* civilian.png */,
-				972C25022AADF71E00700459 /* mafia.png */,
-				972C24FE2AADF71C00700459 /* maniac.png */,
-				972C24FD2AADF71C00700459 /* lover.png */,
-				972C25002AADF71D00700459 /* medic.png */,
-				972C24FF2AADF71D00700459 /* wolf.png */,
+				972C25412AAF7C7D00700459 /* civilian.png */,
+				972C253E2AAF7C7D00700459 /* mafia.png */,
+				972C253F2AAF7C7D00700459 /* wolf.png */,
+				972C25432AAF7C7D00700459 /* maniac.png */,
+				972C25422AAF7C7D00700459 /* lover.png */,
+				972C25402AAF7C7D00700459 /* commissar.png */,
+				972C25442AAF7C7D00700459 /* loupe.png */,
+				972C25452AAF7C7D00700459 /* medic.png */,
 				979BFD682A95230C004F3613 /* app-icon.png */,
 			);
 			path = Images;
@@ -461,19 +461,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				972C254A2AAF7C7D00700459 /* civilian.png in Resources */,
+				972C25492AAF7C7D00700459 /* commissar.png in Resources */,
 				97E5FCD22A84132100E8BB0C /* LaunchScreen.storyboard in Resources */,
-				972C25052AADF71E00700459 /* maniac.png in Resources */,
-				972C250A2AADF71E00700459 /* civilian.png in Resources */,
-				972C25072AADF71E00700459 /* medic.png in Resources */,
-				972C25092AADF71E00700459 /* mafia.png in Resources */,
+				972C254B2AAF7C7D00700459 /* lover.png in Resources */,
+				972C25472AAF7C7D00700459 /* mafia.png in Resources */,
+				972C254E2AAF7C7D00700459 /* medic.png in Resources */,
 				9703997E2A8BB07300E51F78 /* lottie_win.json in Resources */,
-				972C25062AADF71E00700459 /* wolf.png in Resources */,
-				972C250C2AADF8D600700459 /* loupe.png in Resources */,
-				972C25042AADF71E00700459 /* lover.png in Resources */,
+				972C25482AAF7C7D00700459 /* wolf.png in Resources */,
+				972C254D2AAF7C7D00700459 /* loupe.png in Resources */,
 				97E5FCCF2A84132100E8BB0C /* Assets.xcassets in Resources */,
-				972C25082AADF71E00700459 /* commissar.png in Resources */,
 				979BFD692A95230C004F3613 /* app-icon.png in Resources */,
 				97E5FCCD2A84131F00E8BB0C /* RootVC.storyboard in Resources */,
+				972C254C2AAF7C7D00700459 /* maniac.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -736,7 +736,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -773,7 +773,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_TEAM = QV672Q7YV2;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
