@@ -43,7 +43,7 @@ class PlayersDiscussionVC: UIViewController {
     private func setupUi() {
         view.backgroundColor = .secondarySystemBackground
         navigationItem.hidesBackButton = true
-        
+
         players = model.aliveRolePlayers.flatMap { v1 in
             var v = v1.value
             if let lastNightLoverSelection {
@@ -114,7 +114,7 @@ class PlayersDiscussionVC: UIViewController {
         }
         return r
     }
-
+    
     private func handle(complete: @escaping () -> Void) {
         let vc = UIAlertController(title: "Выдвижение", message: "Выбери игрока", preferredStyle: .alert)
         vc.view.tintColor = .label

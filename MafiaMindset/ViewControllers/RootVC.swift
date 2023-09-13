@@ -133,23 +133,25 @@ class RootVC: UIViewController {
     }
     
     @objc private func didTapCreateSessionButton() {
-        let model = SessionModel()
+        //        let model = SessionModel()
         //        model.players = [0: .maf, 1: .civ, 2: .civ, 3: .wolf, 4: .boss, 5: .bloodhound, 6: .maniac, 7: .medic, 8: .maf]
-        //        model.deadPlayers = [4, 6, 0]
-        model.mafCount = 1
-        model.bossCount = 1
-        model.civCount = 2
-        model.wolfCount = 1
-        model.bloodhoundCount = 1
-        model.maniacCount = 1
-        model.medicCount = 1
-        model.commissarCount = 1
-        model.patrolCount = 1
-        model.dayNightCycleType = .day
+        //        model.deadPlayers = []//[4, 6, 0]
+        //        model.mafCount = 1
+        //        model.bossCount = 1
+        //        model.civCount = 2
+        //        model.wolfCount = 1
+        //        model.bloodhoundCount = 1
+        //        model.maniacCount = 1
+        //        model.medicCount = 1
+        //        model.commissarCount = 1
+        //        model.patrolCount = 1
+        ////        model.days.append(.init())
+        ////        model.days.append(.init())
+        //        model.dayNightCycleType = .day
         
-                createSessionWith(model)
-        return
-        //                let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
+        //                createSessionWith(model)
+        //        return
+        //        let vc = DayNightCicleVC(storageViewModel: storageViewModel, model: model)
         
         let vc = CreateSessionVC { [weak self] model in
             self?.createSessionWith(model)

@@ -34,7 +34,7 @@ class RotatingRoleCell: UICollectionViewCell {
     private func setupUi() {
         if isSetup { return }
         isSetup = true
-        
+
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         clipsToBounds = false
@@ -44,6 +44,8 @@ class RotatingRoleCell: UICollectionViewCell {
         contentView.layer.shadowOpacity = 0.3
         contentView.layer.shadowRadius = 10
         contentView.layer.shadowOffset = .init(width: 0, height: 2)
+        
+        rotatingView.addMotionEffect(with: .init(x: -30, y: 30), axis: [.tiltAlongHorizontalAxis, .tiltAlongVerticalAxis])
         
         contentView.addSubview(rotatingView)
         rotatingView.constraintToParent()

@@ -66,7 +66,7 @@ class NightResultVC: UIViewController {
         if !nightModel.dies.isEmpty {
             let r = nightModel.dies
             var str = "Этой ночью умерли: "
-            r.forEach { i in
+            r.sorted().forEach { i in
                 str += "\(i + 1),"
             }
             str.removeLast()
